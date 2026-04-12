@@ -517,7 +517,7 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const WA='85294747571';
-const API_URL='YOUR_GOOGLE_APPS_SCRIPT_DEPLOYED_URL';
+const API_URL='https://script.google.com/macros/s/AKfycbzUhq-cB14FXodw5vlY8U77u7W8ufIAOZjOvy6dWZMvACjPJKRy2R8PL1xWj95n_fc2pg/exec';
 const G='#1B5C3F',O='#F47820',LIME='#7DC52E';
 
 // Courts stored in JS array — referenced by index (fixes onclick bug)
@@ -1059,7 +1059,7 @@ async function holdSlot(){
   try {
     const courtKey=selCourt.idx===0?'home':selCourt.idx===1?'practice':'both';
     const params=new URLSearchParams({action:'book',date:toDateKey(selDate),court:courtKey,startHour:startH,duration:dur,name:name,phone:phone,price:p.sub,total:p.total,paymentMethod:'FPS'});
-    const res=await fetch(API_URL+'?'+params);
+    const res=await fetch(_URL+'?'+params);
     const result=await res.json();
 
     if(!result.success){
