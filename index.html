@@ -278,10 +278,6 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
     <div class="ldr-tag" id="ldr-tag">Good energy · Great game</div>
   </div>
   <div class="ldr-bar"><div class="ldr-fill"></div></div>
-  <div style="margin-top:24px;font-size:11px;color:rgba(255,255,255,.2);text-align:center;line-height:1.7">
-    Having trouble loading?<br/>
-    <a href="https://wa.me/85294747571" style="color:rgba(255,255,255,.35);text-decoration:none;font-weight:600">WhatsApp us at +852 9474 7571</a>
-  </div>
 </div>
 
 <!-- BANNER -->
@@ -504,7 +500,7 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
         <h4 id="fc-con"></h4>
         <a href="https://www.instagram.com/alldaypickleco" target="_blank" rel="noreferrer">Instagram</a>
         <a href="https://wa.me/85294747571">WhatsApp · +852 9474 7571</a>
-        <a href="/cdn-cgi/l/email-protection#08606d646467486964646c697178616b63646d6b67266b6765"><span class="__cf_email__" data-cfemail="3d55585151527d5c5151595c444d545e5651585e52135e5250">[email&#160;protected]</span></a>
+        <a href="/cdn-cgi/l/email-protection#0169646d6d6e41606d6d6560787168626a6d64626e2f626e6c"><span class="__cf_email__" data-cfemail="8de5e8e1e1e2cdece1e1e9ecf4fde4eee6e1e8eee2a3eee2e0">[email&#160;protected]</span></a>
         <a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" rel="noreferrer" id="fn-terms"></a>
       </div>
     </div>
@@ -521,7 +517,6 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const WA='85294747571';
-const API_URL='https://script.google.com/macros/s/AKfycbzUhq-cB14FXodw5vlY8U77u7W8ufIAOZjOvy6dWZMvACjPJKRy2R8PL1xWj95n_fc2pg/exec';
 const G='#1B5C3F',O='#F47820',LIME='#7DC52E';
 
 // Courts stored in JS array — referenced by index (fixes onclick bug)
@@ -1048,30 +1043,13 @@ function rS4(){
   <p style="text-align:center;font-size:11px;color:#9B9591;margin-top:7px">${l.hs2}</p>`;
 }
 
-function toDateKey(d){return d?d.toISOString().split('T')[0]:''}
-
-async function holdSlot(){
+function holdSlot(){
   const l=L();
   const name=document.getElementById('bkN')?.value?.trim();
   const phone=document.getElementById('bkP')?.value?.trim();
   if(!name||!phone){alert(lang==='ja'?'お名前とWhatsApp番号を入力してください。':lang==='zh'?'請輸入姓名及WhatsApp號碼。':'Please enter your name and WhatsApp number.');return;}
   const p=calcTotal(selCourt,selDate,startH,dur);
-
-  // Show loading
-  document.getElementById('stepContent').innerHTML='<div style="text-align:center;padding:40px 0"><div style="font-size:36px;margin-bottom:16px">⏳</div><div style="font-size:14px;color:#6B6560">'+(lang==='zh'?'正在鎖定時段…':lang==='ja'?'スロットを確保中…':'Holding your slot…')+'</div></div>';
-
-  try {
-    const courtKey=selCourt.idx===0?'home':selCourt.idx===1?'practice':'both';
-    const params=new URLSearchParams({action:'book',date:toDateKey(selDate),court:courtKey,startHour:startH,duration:dur,name:name,phone:phone,price:p.sub,total:p.total,paymentMethod:'FPS'});
-    const res=await fetch(API_URL+'?'+params);
-    const result=await res.json();
-
-    if(!result.success){
-      document.getElementById('stepContent').innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:40px;margin-bottom:12px">😅</div><p style="color:#6B6560;font-size:13px;margin-bottom:20px">'+(lang==='zh'?'時段剛被預約，請選擇其他時間。':lang==='ja'?'スロットが取られました。別の時間をお選びください。':'Someone just grabbed that slot. Please choose a different time.')+'</p><button onclick="step=3;renderStep()" style="width:100%;padding:13px;border-radius:12px;border:none;background:#1B5C3F;color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px">'+(lang==='zh'?'選擇其他時間':lang==='ja'?'別の時間を選ぶ':'Choose a Different Time')+'</button><a href="https://wa.me/'+WA+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:12px;background:#25D366;color:white;font-size:13px;font-weight:700;text-decoration:none;box-sizing:border-box">💬 WhatsApp Us</a></div>';
-      renderStepBar(); return;
-    }
-
-    const bookId=result.bookingId;
+  const bookId='ADPC-'+Date.now().toString(36).toUpperCase();
   const waMsg=encodeURIComponent(`Hi Allday Pickle! 👋\n\nBooking ID: ${bookId}\n📅 ${fmtDate(selDate)}\n🏓 ${selCourt.name}\n⏰ ${fmtH(startH)}–${fmtEnd(startH,dur)} (${dur}h)\n💰 HKD $${p.total}\n\nPayment sent via FPS. Please confirm! 🙏`);
   document.getElementById('stepContent').innerHTML=`
     <div style="text-align:center;padding:14px 0">
@@ -1095,10 +1073,19 @@ async function holdSlot(){
       </a>
       <p style="font-size:11px;color:#9B9591">${l.hf}</p>
     </div>`;
-  } catch(err) {
-    document.getElementById('stepContent').innerHTML='<div style="text-align:center;padding:20px 0"><div style="font-size:36px;margin-bottom:12px">⚠️</div><p style="color:#6B6560;font-size:13px;margin-bottom:16px">'+(lang==='zh'?'連接錯誤，請WhatsApp我們預約。':lang==='ja'?'接続エラー。WhatsAppでご連絡ください。':'Connection error. Please WhatsApp us to book.')+'</p><a href="https://wa.me/'+WA+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:12px;background:#25D366;color:white;font-size:13px;font-weight:700;text-decoration:none;box-sizing:border-box">💬 WhatsApp Us</a></div>';
-  }
   renderStepBar();
 }
 
-function toggleMenu(){document.getElementById('mobMenu').c
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const el=document.getElementById('loader');
+    el.classList.add('hide');
+    setTimeout(()=>el.remove(),800);
+  },1600);
+  renderAll();
+});
+</script>
+</body>
+</html>
