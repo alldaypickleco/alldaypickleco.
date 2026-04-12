@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Allday Pickle Co. — Hong Kong's friendliest pickleball courts. Open 24/7 at Lai Chi Kok. Book online in seconds."/>
+<meta property="og:title" content="Allday Pickle Co. — Pickleball Courts in Hong Kong"/>
+<meta property="og:description" content="Two courts. Open 24/7. Paddles & balls included. 1 min from Lai Chi Kok MTR."/>
+<meta property="og:url" content="https://alldaypickleco.com"/>
+<title>Allday Pickle Co. | Pickleball Courts Hong Kong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --g:#1B5C3F;--g2:#0F3D27;--o:#F47820;--lime:#7DC52E;
+  --wa:#25D366;--cream:#F5F0E8;--dark:#0D1F17;
+  --silver:#B8C4CA;--text:#1A1A1A;--muted:#6B6560;--light:#F9F6F1;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .7s}
+#loader.hide{opacity:0;pointer-events:none}
+.ldr-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:32px;opacity:0;transform:translateY(14px);animation:fup .55s .1s forwards}
+.ldr-circle{width:100px;height:100px;border-radius:50%;border:2px solid rgba(27,92,63,.55);background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:18px}
+.ldr-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.28);font-weight:600}
+.ldr-bar{width:130px;height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:20px}
+.ldr-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--lime),var(--o));animation:fill 1.5s ease forwards}
+@keyframes fup{to{opacity:1;transform:translateY(0)}}
+@keyframes fill{0%{width:0}100%{width:100%}}
+
+/* ── LOGO PARTS ── */
+.logo-circle{border-radius:50%;border:1.5px solid rgba(27,92,63,.45);background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.logo-ball{background:var(--lime);border-radius:50%;position:relative;display:inline-flex}
+.logo-ball::after{content:'';position:absolute;inset:15%;border-radius:50%;border:1.5px solid rgba(0,0,0,.22)}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(14px);border-bottom:1px solid rgba(27,92,63,.1)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:1280px;margin:0 auto;padding:0 5vw}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-wm{display:flex;flex-direction:column;line-height:1.1}
+.nav-wm span:first-child{font-size:13px;font-weight:800;color:var(--g)}
+.nav-wm span:last-child{font-size:13px;font-weight:800;color:var(--o)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:500;transition:.2s;white-space:nowrap}
+.nav-links a:hover{color:var(--g)}
+.lang-sw{display:flex;align-items:center;gap:2px;background:rgba(27,92,63,.07);border-radius:20px;padding:3px}
+.lb{background:none;border:none;color:var(--muted);padding:4px 9px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.lb.on{background:var(--g);color:white}
+.nav-cta{background:var(--o);color:white;padding:8px 16px;border-radius:22px;font-weight:700;font-size:13px;text-decoration:none;transition:.2s;white-space:nowrap}
+.nav-cta:hover{background:#d96b0d}
+.hbg{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:4px}
+.hbg span{width:20px;height:2px;background:var(--text);border-radius:2px;display:block}
+.mob-menu{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(245,240,232,.98);backdrop-filter:blur(16px);border-bottom:1px solid rgba(27,92,63,.1);padding:12px 5vw 18px;flex-direction:column;z-index:99}
+.mob-menu.open{display:flex}
+.mob-menu a{text-decoration:none;color:var(--text);font-size:15px;font-weight:500;padding:11px 0;border-bottom:1px solid rgba(184,196,202,.25)}
+.mob-lang{display:flex;gap:6px;padding:14px 0 6px}
+.mob-lang button{flex:1;padding:9px;border-radius:10px;border:1.5px solid rgba(184,196,202,.5);background:white;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted)}
+.mob-lang button.on{background:var(--g);color:white;border-color:var(--g)}
+.mob-book{margin-top:10px;background:var(--o);color:white;padding:13px;border-radius:14px;text-align:center;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;text-decoration:none;display:block}
+
+/* ── BANNER ── */
+.banner{background:var(--g);color:white;text-align:center;padding:9px 16px;font-size:clamp(11px,2vw,13px);font-weight:500}
+.banner a{color:#8CC63F;font-weight:700;text-decoration:none}
+
+/* ── HERO ── */
+.hero{min-height:100svh;background:linear-gradient(160deg,var(--g) 0%,var(--g2) 58%,#060f0a 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;font-family:'DM Serif Display',serif;font-size:clamp(90px,26vw,400px);font-weight:400;color:rgba(255,255,255,.03);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.hero-eye{font-size:11px;letter-spacing:4px;color:rgba(255,255,255,.3);text-transform:uppercase;font-weight:600;margin-bottom:14px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(34px,7vw,84px);font-weight:400;color:white;line-height:1.05;letter-spacing:-.03em;margin-bottom:18px;font-style:italic}
+.hero h1 em{font-style:normal;color:var(--o)}
+.hero-sub{font-size:clamp(13px,1.8vw,15px);color:rgba(255,255,255,.45);margin-bottom:6px}
+.hero-det{font-size:clamp(11px,1.4vw,13px);color:rgba(255,255,255,.25);margin-bottom:36px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.btn-p{background:var(--o);color:white;padding:13px 26px;border-radius:30px;border:none;font-size:clamp(13px,1.8vw,15px);font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;box-shadow:0 6px 20px rgba(244,120,32,.4);font-family:inherit;white-space:nowrap;display:inline-block}
+.btn-p:hover{transform:translateY(-2px);background:#d96b0d}
+.btn-o{color:white;padding:13px 22px;border-radius:30px;border:1.5px solid rgba(255,255,255,.2);font-size:clamp(13px,1.8vw,14px);font-weight:600;text-decoration:none;font-family:inherit;white-space:nowrap;background:transparent;cursor:pointer;display:inline-block}
+.btn-o:hover{background:rgba(255,255,255,.08)}
+.hero-scroll{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.2);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:6px;letter-spacing:1px}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* ── SECTION BASE ── */
+section{padding:clamp(52px,7vw,92px) 5vw}
+.si{max-width:1280px;margin:0 auto}
+.sl{font-size:11px;letter-spacing:4px;text-transform:uppercase;font-weight:700;color:var(--o);margin-bottom:12px}
+.st{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,50px);font-weight:400;line-height:1.1;letter-spacing:-.02em;color:var(--text);margin-bottom:12px}
+.st em{font-style:italic;color:var(--g)}
+.sd{font-size:clamp(13px,1.6vw,15px);color:var(--muted);line-height:1.7;max-width:520px}
+
+/* ── BOOKING TOP ── */
+.bk-top{background:white;padding:clamp(44px,6vw,76px) 5vw}
+.bk-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.bk-left h2{font-family:'DM Serif Display',serif;font-size:clamp(26px,3.5vw,46px);font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+.bk-left h2 em{font-style:italic;color:var(--g)}
+.bk-left p{font-size:clamp(13px,1.5vw,15px);color:var(--muted);line-height:1.7;margin-bottom:18px}
+.trust-pills{display:flex;flex-wrap:wrap;gap:7px}
+.tp{display:flex;align-items:center;gap:5px;background:rgba(27,92,63,.07);border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--g)}
+.bk-widget{background:white;border-radius:18px;border:1px solid rgba(184,196,202,.35);padding:clamp(20px,4vw,30px);box-shadow:0 4px 28px rgba(0,0,0,.07)}
+
+/* ── COURTS ── */
+.courts-sec{background:var(--cream)}
+.courts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;margin-top:38px}
+.cc{border-radius:18px;overflow:hidden;border:1px solid rgba(184,196,202,.4);transition:.25s;background:white}
+.cc:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(27,92,63,.1);border-color:var(--g)}
+.cc-hd{padding:22px;color:white}
+.cc-badge{display:inline-block;background:rgba(244,120,32,.25);color:#FBBF6A;border:1px solid rgba(244,120,32,.3);border-radius:20px;font-size:10px;font-weight:700;padding:3px 9px;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase}
+.cc-name{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,22px);font-weight:400;margin-bottom:2px}
+.cc-sub{font-size:11px;color:rgba(255,255,255,.45)}
+.cc-bd{padding:18px}
+.cc-desc{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.cc-pr{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.cc-price{font-size:19px;font-weight:800}
+.cc-plab{font-size:11px;color:var(--silver)}
+.cc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.tag{font-size:11px;background:rgba(27,92,63,.07);color:var(--g);border-radius:20px;padding:4px 9px;font-weight:600}
+
+/* ── PRICING ── */
+.pr-sec{background:white}
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin-top:32px;max-width:620px}
+.pc{background:var(--light);border-radius:14px;border:1px solid rgba(184,196,202,.4);padding:18px}
+.pc.peak{border-color:var(--o);background:rgba(244,120,32,.02)}
+.pt-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:12px}
+.pc.peak .pt-label{color:var(--o)}
+.pr-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(184,196,202,.3);font-size:13px}
+.pr-row:last-child{border-bottom:none;font-weight:700}
+.dg{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.dc{background:var(--light);border-radius:10px;border:1px solid rgba(184,196,202,.4);padding:12px 16px;flex:1;min-width:110px}
+.dp{font-size:24px;font-weight:800;color:var(--g)}
+.dl{font-size:12px;color:var(--muted);margin-top:3px}
+.pnote{margin-top:18px;background:rgba(27,92,63,.06);border-radius:10px;padding:12px 16px;font-size:13px;color:var(--g);border-left:3px solid var(--g);max-width:620px}
+
+/* ── EVENTS ── */
+.events-sec{background:var(--dark);color:white}
+.events-sec .st{color:white}
+.events-sec .sd{color:rgba(255,255,255,.4)}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;margin-top:40px}
+.ev-card{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);transition:.25s;cursor:default}
+.ev-card:hover{border-color:rgba(255,255,255,.18);transform:translateY(-2px)}
+.ev-stripe{height:4px}
+.ev-body{padding:20px;background:rgba(255,255,255,.04)}
+.ev-type{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 9px;border-radius:20px;margin-bottom:12px}
+.ev-type.open{background:rgba(125,197,46,.15);color:var(--lime)}
+.ev-type.clinic{background:rgba(244,120,32,.15);color:#F47820}
+.ev-type.product{background:rgba(27,92,63,.4);color:#8CC63F}
+.ev-date{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:6px;font-weight:500}
+.ev-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:white;margin-bottom:6px;line-height:1.2}
+.ev-desc{font-size:13px;color:rgba(255,255,255,.38);line-height:1.6;margin-bottom:14px}
+.ev-meta{display:flex;gap:12px;flex-wrap:wrap}
+.ev-pill{font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;font-weight:500}
+.ev-cta{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:700;color:var(--lime);text-decoration:none;border:1px solid rgba(125,197,46,.3);padding:7px 14px;border-radius:20px;transition:.2s}
+.ev-cta:hover{background:rgba(125,197,46,.1)}
+.events-cta{margin-top:32px;text-align:center}
+
+/* ── AMENITIES ── */
+.am-sec{background:var(--cream)}
+.am-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:14px;margin-top:40px}
+.am-card{background:white;border:1px solid rgba(184,196,202,.4);border-radius:14px;padding:22px 18px;transition:.2s}
+.am-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(27,92,63,.08)}
+.am-icon{width:38px;height:38px;border-radius:10px;background:rgba(27,92,63,.08);display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:17px}
+.am-title{font-size:14px;font-weight:700;margin-bottom:5px;color:var(--text)}
+.am-desc{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ── INVENTORY ── */
+.inv-sec{background:white}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;margin-top:32px}
+.inv-card{border:1px solid rgba(184,196,202,.4);border-radius:14px;overflow:hidden}
+.inv-hd{padding:13px 16px;display:flex;justify-content:space-between;align-items:center}
+.inv-hd.pa{background:rgba(27,92,63,.06)}
+.inv-hd.ba{background:rgba(244,120,32,.06)}
+.inv-hd.sh{background:rgba(125,197,46,.06)}
+.inv-ititle{font-weight:700;font-size:13px}
+.inv-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.ibg{background:rgba(27,92,63,.12);color:var(--g)}
+.ibo{background:rgba(244,120,32,.12);color:var(--o)}
+.inv-body{padding:12px 16px;background:white}
+.inv-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(184,196,202,.2);font-size:12px}
+.inv-row:last-child{border-bottom:none}
+.inv-st{display:flex;gap:5px;align-items:center;font-size:11px;font-weight:600}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex-shrink:0}
+.dok{background:var(--g)}.dlw{background:var(--o)}.dout{background:#dc3232}
+
+/* ── LOCATION ── */
+.loc-sec{background:var(--cream)}
+.loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin-top:40px}
+.loc-map{background:linear-gradient(135deg,var(--g),var(--g2));border-radius:18px;height:260px;display:flex;align-items:center;justify-content:center;color:white;overflow:hidden;position:relative}
+.loc-map-pin{text-align:center}
+.lrow{display:flex;gap:11px;margin-bottom:15px;align-items:flex-start}
+.li{width:32px;height:32px;border-radius:9px;background:rgba(27,92,63,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.lc strong{display:block;font-size:13px;font-weight:700;margin-bottom:1px}
+.lc span{font-size:12px;color:var(--muted)}
+.lc a{color:var(--g);font-weight:600;text-decoration:none}
+
+/* ── FAQ ── */
+.faq-sec{background:white}
+.faq-item{border-bottom:1px solid rgba(184,196,202,.4);padding:15px 0}
+.fq{font-weight:700;font-size:14px;margin-bottom:6px}
+.fa{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ── CTA ── */
+.cta-sec{background:linear-gradient(160deg,var(--g),var(--g2));text-align:center;padding:clamp(52px,7vw,92px) 5vw}
+.cta-sec .st{color:white}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
+.ft-inner{max-width:1280px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:44px;margin-bottom:32px}
+.ft-brand p{font-size:12px;color:rgba(255,255,255,.3);line-height:1.7;max-width:240px;margin-top:11px}
+.ft-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.28);margin-bottom:12px}
+.ft-col a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;margin-bottom:8px;transition:.2s}
+.ft-col a:hover{color:white}
+.ft-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:18px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.18);flex-wrap:wrap;gap:6px}
+
+/* ── WA FLOAT ── */
+.wa-float{position:fixed;bottom:18px;right:14px;background:var(--wa);color:white;padding:10px 16px;border-radius:30px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 6px 18px rgba(37,211,102,.35);z-index:99;transition:.2s;display:flex;align-items:center;gap:6px}
+.wa-float:hover{transform:translateY(-2px)}
+
+/* ── BOOKING WIDGET ── */
+.step-bar{display:flex;align-items:center;margin-bottom:22px}
+.sdot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;transition:.2s}
+.sdot.done{background:var(--g);color:white}
+.sdot.active{background:var(--g);color:white;box-shadow:0 0 0 3px rgba(27,92,63,.15)}
+.sdot.idle{background:rgba(184,196,202,.3);color:#9B9591}
+.sline{flex:1;height:1px;background:rgba(184,196,202,.4);margin:0 3px;margin-bottom:12px}
+.sline.done{background:var(--g)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-hdr{text-align:center;font-size:10px;font-weight:700;color:var(--silver);padding:3px}
+.cal-day{aspect-ratio:1;border-radius:50%;border:none;background:transparent;cursor:pointer;font-size:clamp(10px,2vw,12px);transition:.12s;display:flex;align-items:center;justify-content:center;min-width:0;font-family:inherit}
+.cal-day:hover:not(:disabled){background:rgba(27,92,63,.1)}
+.cal-day.sel{background:var(--g);color:white;font-weight:700}
+.cal-day.today{border:1.5px solid var(--g);font-weight:700}
+.cal-day:disabled{color:#D4D0CB;cursor:default}
+.hr-btn{padding:9px 2px;border-radius:8px;border:1.5px solid rgba(200,208,212,.7);background:white;font-size:10px;cursor:pointer;font-family:inherit;transition:.1s;text-align:center}
+.hr-btn.sel{border-color:var(--g);background:var(--g);color:white;font-weight:700}
+.dur-btn{padding:10px 4px;border-radius:9px;border:1.5px solid rgba(200,208,212,.7);background:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;transition:.1s}
+.dur-btn.sel{border-color:var(--g);background:var(--g);color:white}
+.ct-btn{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(184,196,202,.6);background:var(--light);cursor:pointer;text-align:left;margin-bottom:8px;transition:.15s;font-family:inherit}
+.ct-btn:hover{border-color:var(--g)}
+.ct-btn.sel{border-color:var(--g);background:rgba(27,92,63,.04);box-shadow:0 0 0 1px rgba(27,92,63,.12)}
+.m-tab{padding:7px 4px;border-radius:9px;border:1.5px solid rgba(184,196,202,.6);background:var(--light);font-size:11px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.m-tab.on{background:var(--g);color:white;border-color:var(--g)}
+.bk-btn{width:100%;padding:13px;border-radius:12px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .bk-inner{grid-template-columns:1fr}
+  .loc-grid{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-links,.lang-sw,.nav-cta{display:none}
+  .hbg{display:flex}
+  .ft-top{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:center}
+  .btn-p,.btn-o{width:100%;max-width:260px;text-align:center}
+  .wa-txt{display:none}
+  .wa-float{padding:12px;border-radius:50%;width:46px;height:46px;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ldr-wrap">
+    <div class="ldr-circle">
+      <div style="font-size:16px;font-weight:800;color:var(--g);line-height:1">allday</div>
+      <div style="font-size:16px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+      <div style="display:flex;align-items:center;gap:1px;line-height:1">
+        <span style="font-size:16px;font-weight:800;color:var(--g)">c</span>
+        <div style="width:13px;height:13px;background:var(--lime);border-radius:50%;position:relative"><div style="position:absolute;inset:14%;border-radius:50%;border:1.5px solid rgba(0,0,0,.22)"></div></div>
+        <span style="font-size:16px;font-weight:800;color:var(--g)">.</span>
+      </div>
+    </div>
+    <div class="ldr-tag" id="ldr-tag">Good energy · Great game</div>
+  </div>
+  <div class="ldr-bar"><div class="ldr-fill"></div></div>
+</div>
+
+<!-- BANNER -->
+<div class="banner" id="t-banner"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-circle" style="width:36px;height:36px">
+        <div style="font-size:7.5px;font-weight:800;color:var(--g);line-height:1">allday</div>
+        <div style="font-size:7.5px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+        <div style="display:flex;align-items:center;gap:1px">
+          <span style="font-size:7.5px;font-weight:800;color:var(--g)">c</span>
+          <div class="logo-ball" style="width:6px;height:6px"></div>
+          <span style="font-size:7.5px;font-weight:800;color:var(--g)">.</span>
+        </div>
+      </div>
+      <div class="nav-wm"><span>allday</span><span>pickle co.</span></div>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#courts" id="nt-courts"></a>
+        <a href="#events" id="nt-events"></a>
+        <a href="#pricing" id="nt-pricing"></a>
+        <a href="#location" id="nt-location"></a>
+        <a href="contact.html" id="nt-contact"></a>
+      </div>
+      <div class="lang-sw">
+        <button class="lb on" onclick="setLang('en')">EN</button>
+        <button class="lb" onclick="setLang('zh')">繁中</button>
+        <button class="lb" onclick="setLang('ja')">日</button>
+      </div>
+      <a href="#booking" class="nav-cta" id="nt-book"></a>
+    </div>
+    <button class="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mob-menu" id="mobMenu">
+    <a href="#courts" onclick="toggleMenu()" id="nm-courts"></a>
+    <a href="#events" onclick="toggleMenu()" id="nm-events"></a>
+    <a href="#pricing" onclick="toggleMenu()" id="nm-pricing"></a>
+    <a href="#location" onclick="toggleMenu()" id="nm-location"></a>
+    <a href="contact.html" id="nm-contact"></a>
+    <div class="mob-lang">
+      <button class="on" onclick="setLang('en');toggleMenu()">English</button>
+      <button onclick="setLang('zh');toggleMenu()">繁體中文</button>
+      <button onclick="setLang('ja');toggleMenu()">日本語</button>
+    </div>
+    <a href="#booking" class="mob-book" onclick="toggleMenu()" id="nm-book"></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">PICKLE</div>
+  <div class="hero-eye">Allday Pickle Co. · Lai Chi Kok, HK</div>
+  <h1 id="hero-h1"></h1>
+  <p class="hero-sub" id="hero-sub"></p>
+  <p class="hero-det" id="hero-det"></p>
+  <div class="hero-btns">
+    <a href="#booking" class="btn-p" id="hero-b1"></a>
+    <a href="https://www.instagram.com/alldaypickleco" target="_blank" rel="noreferrer" class="btn-o" id="hero-b2"></a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>SCROLL</span></div>
+</section>
+
+<!-- BOOKING -->
+<div class="bk-top" id="booking">
+  <div class="bk-inner">
+    <div class="bk-left">
+      <div class="sl" id="sl-bk"></div>
+      <h2 id="st-bk"></h2>
+      <p id="sd-bk"></p>
+      <div class="trust-pills" id="trust-pills"></div>
+    </div>
+    <div class="bk-widget">
+      <div class="step-bar" id="stepBar"></div>
+      <div id="stepContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- COURTS -->
+<section class="courts-sec" id="courts">
+  <div class="si">
+    <div class="sl" id="sl-c"></div>
+    <div class="st" id="st-c"></div>
+    <div class="sd" id="sd-c"></div>
+    <div class="courts-grid" id="courts-grid"></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pr-sec" id="pricing">
+  <div class="si">
+    <div class="sl" id="sl-p"></div>
+    <div class="st" id="st-p"></div>
+    <div class="sd" id="sd-p"></div>
+    <div class="pg">
+      <div class="pc"><div class="pt-label" id="pt-op"></div><div id="pr-op"></div></div>
+      <div class="pc peak"><div class="pt-label" id="pt-pk"></div><div id="pr-pk"></div></div>
+    </div>
+    <div class="dg">
+      <div class="dc"><div class="dp">5%</div><div class="dl" id="d2h"></div></div>
+      <div class="dc"><div class="dp">10%</div><div class="dl" id="d3h"></div></div>
+    </div>
+    <div class="pnote" id="pnote"></div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events-sec" id="events">
+  <div class="si">
+    <div class="sl" style="color:var(--lime)" id="sl-ev"></div>
+    <div class="st" id="st-ev"></div>
+    <div class="sd" id="sd-ev"></div>
+    <div class="events-grid" id="events-grid"></div>
+    <div class="events-cta">
+      <a href="https://wa.me/85294747571" target="_blank" rel="noreferrer" class="btn-p" id="ev-cta"></a>
+    </div>
+  </div>
+</section>
+
+<!-- AMENITIES -->
+<section class="am-sec">
+  <div class="si">
+    <div class="sl" id="sl-am"></div>
+    <div class="st" id="st-am"></div>
+    <div class="sd" id="sd-am"></div>
+    <div class="am-grid" id="am-grid"></div>
+  </div>
+</section>
+
+<!-- INVENTORY -->
+<section class="inv-sec" id="inventory">
+  <div class="si">
+    <div class="sl" id="sl-inv"></div>
+    <div class="st" id="st-inv"></div>
+    <div class="sd" id="sd-inv"></div>
+    <div class="inv-grid" id="inv-grid"></div>
+    <p style="font-size:12px;color:var(--silver);margin-top:13px" id="inv-note"></p>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="loc-sec" id="location">
+  <div class="si">
+    <div class="sl" id="sl-l"></div>
+    <div class="st" id="st-l"></div>
+    <div class="loc-grid">
+      <div class="loc-map">
+        <div class="loc-map-pin">
+          <div style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:4px">A.D.P.C.</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5)">寶源亞洲中心</div>
+          <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,.3)">📍 Lai Chi Kok, Kowloon</div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-family:'DM Serif Display',serif;font-size:clamp(20px,3vw,26px);margin-bottom:16px" id="loc-h3"></h3>
+        <div id="loc-rows"></div>
+        <a href="contact.html" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;color:var(--g);font-weight:700;font-size:13px;text-decoration:none" id="loc-contact-link"></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-sec" id="faq">
+  <div class="si">
+    <div class="sl" id="sl-faq"></div>
+    <div class="st" id="st-faq"></div>
+    <div style="max-width:700px;margin-top:32px" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="si" style="text-align:center">
+    <div class="sl" style="color:var(--lime)" id="sl-cta"></div>
+    <div class="st" id="st-cta"></div>
+    <p style="color:rgba(255,255,255,.45);font-size:14px;margin:0 auto 28px;max-width:440px" id="sd-cta"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <a href="#booking" class="btn-p" id="cta-b1"></a>
+      <a href="contact.html" class="btn-o" id="cta-b2"></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a href="#" style="display:flex;align-items:center;gap:9px;text-decoration:none">
+          <div class="logo-circle" style="width:40px;height:40px">
+            <div style="font-size:8px;font-weight:800;color:var(--g);line-height:1">allday</div>
+            <div style="font-size:8px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+            <div style="display:flex;align-items:center;gap:1px">
+              <span style="font-size:8px;font-weight:800;color:var(--g)">c</span>
+              <div class="logo-ball" style="width:7px;height:7px"></div>
+              <span style="font-size:8px;font-weight:800;color:var(--g)">.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;line-height:1.1">
+            <span style="font-size:13px;font-weight:800;color:var(--g)">allday</span>
+            <span style="font-size:13px;font-weight:800;color:var(--o)">pickle co.</span>
+          </div>
+        </a>
+        <p id="ft-desc"></p>
+      </div>
+      <div class="ft-col">
+        <h4 id="fc-nav"></h4>
+        <a href="#courts" id="fn-courts"></a>
+        <a href="#events" id="fn-events"></a>
+        <a href="#pricing" id="fn-pricing"></a>
+        <a href="#location" id="fn-location"></a>
+        <a href="contact.html" id="fn-contact"></a>
+      </div>
+      <div class="ft-col">
+        <h4 id="fc-con"></h4>
+        <a href="https://www.instagram.com/alldaypickleco" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://wa.me/85294747571">WhatsApp · +852 9474 7571</a>
+        <a href="mailto:hello@alldaypickleco.com">hello@alldaypickleco.com</a>
+        <a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" rel="noreferrer" id="fn-terms"></a>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2025 Allday Pickle Co. All rights reserved.</span>
+      <span id="ft-made"></span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/85294747571" class="wa-float" target="_blank" rel="noreferrer">
+  <span style="font-size:16px">💬</span><span class="wa-txt" id="wa-lbl"></span>
+</a>
+
+<script>
+const WA='85294747571';
+const G='#1B5C3F',O='#F47820',LIME='#7DC52E';
+
+// Courts stored in JS array — referenced by index (fixes onclick bug)
+const ALL_COURTS={
+  en:[
+    {idx:0,name:'Home Court 主場',sub:'Court A · Regulation size',np:300,pk:400},
+    {idx:1,name:'Practice Court 練習場',sub:'Court B · Compact size',np:200,pk:300},
+    {idx:2,name:'Both Courts 全場',sub:'Full venue · Groups & Events',np:500,pk:700}
+  ],
+  zh:[
+    {idx:0,name:'主場',sub:'A場 · 標準規格',np:300,pk:400},
+    {idx:1,name:'練習場',sub:'B場 · 面積較細',np:200,pk:300},
+    {idx:2,name:'全場',sub:'全場租用 · 適合團體',np:500,pk:700}
+  ],
+  ja:[
+    {idx:0,name:'ホームコート 主場',sub:'コートA · 正規サイズ',np:300,pk:400},
+    {idx:1,name:'練習コート 練習場',sub:'コートB · コンパクト',np:200,pk:300},
+    {idx:2,name:'両コート 全場',sub:'施設全体 · グループ向け',np:500,pk:700}
+  ]
+};
+
+const T={
+en:{
+  ldrTag:'Good energy · Great game',
+  banner:'🎉 <strong>Soft Opening Special</strong> — <a href="https://wa.me/'+WA+'" style="color:#8CC63F;font-weight:700">WhatsApp us for deals</a>',
+  nav:['Courts','Events','Pricing','Location','Contact','Book Now'],
+  'hero-h1':'Good energy,<br/><em>great game.</em>',
+  'hero-sub':'寶源亞洲中心 · 1 min from Lai Chi Kok MTR',
+  'hero-det':'Open 24/7 · Balls & paddles included · Two courts',
+  'hero-b1':'Book a Court','hero-b2':'Follow on IG',
+  'sl-bk':'Reserve Your Slot','st-bk':'Book a court<br/><em>in 60 seconds.</em>',
+  'sd-bk':'Pick a date, choose your court, lock your time. Your slot is held for 5 hours while you pay.',
+  trust:['✓ Instant confirmation','✓ Open 24/7','✓ Paddles & balls incl.','✓ FPS · PayMe'],
+  'sl-c':'Our Facilities','st-c':'Two courts,<br/><em>one vibe.</em>',
+  'sd-c':'Both courts include paddles, balls, and everything you need. Open around the clock.',
+  courts:[
+    {badge:'Court A',name:'Home Court',sub:'主場 · Regulation',desc:'Full regulation competition court. Ideal for matches and serious practice.',tags:['Regulation','Paddles incl.','Balls incl.','24/7']},
+    {badge:'Court B',name:'Practice Court',sub:'練習場 · Compact',desc:'Smaller court perfect for beginners, dinking and 1-on-1 play.',tags:['Beginner-friendly','Paddles incl.','Balls incl.','24/7']},
+    {badge:'Full Venue',name:'Both Courts',sub:'全場 · Groups & Events',desc:'Book the entire venue — Home + Practice court. Perfect for groups and corporate events.',tags:['Both courts','Full venue','Groups','Events'],dark:true}
+  ],
+  book:'Book →',
+  'sl-p':'Pricing','st-p':'Simple,<br/><em>transparent rates.</em>',
+  'sd-p':'Peak hours: weekends from 8am, weekdays from 6pm. Multi-hour discounts applied automatically.',
+  'pt-op':'🌙 Off-Peak','pt-pk':'☀️ Peak Hours',
+  rows:[['Home Court','$300/hr','$400/hr'],['Practice Court','$200/hr','$300/hr'],['Both Courts','$500/hr','$700/hr']],
+  'd2h':'off for 2-hour booking','d3h':'off for 3–4 hour booking',
+  pnote:'💳 Payment via FPS 轉數快 or PayMe. Send screenshot on WhatsApp to confirm your slot.',
+  'sl-ev':'Events & Sessions','st-ev':'Join us on<br/><em>the court.</em>',
+  'sd-ev':'From casual open play to beginner clinics — there\'s always something happening at Allday Pickle.',
+  events:[
+    {type:'open',typeLabel:'Open Play',stripe:'#7DC52E',date:'Every Saturday & Sunday',title:'Weekend Open Play',desc:'Drop in, meet new players, and enjoy casual rallies with the Allday Pickle community. All levels welcome.',time:'10:00 – 13:00',spots:'Open entry',wa:true},
+    {type:'clinic',typeLabel:'Beginner Clinic',stripe:'#F47820',date:'Every Tuesday',title:'Beginner Clinic',desc:'Never picked up a paddle? Our coached sessions cover the basics — rules, scoring, technique, and court etiquette.',time:'19:00 – 21:00',spots:'Max 8 players',wa:true},
+    {type:'product',typeLabel:'ADPC Exclusive',stripe:'#1B5C3F',date:'Monthly — check WhatsApp for dates',title:'Allday Pickle Product Testing Session',desc:'Be the first to try our upcoming paddle and ball releases. Exclusive to our community — limited spots each session.',time:'TBA',spots:'Invite only',wa:true}
+  ],
+  'ev-cta':'WhatsApp us to join an event →',
+  'sl-am':'What\'s Included','st-am':'Everything you<br/><em>need to play.</em>','sd-am':'Show up and play. No gear needed.',
+  am:[
+    {icon:'🏓',title:'Paddles & Balls',desc:'Quality paddles and Onix balls included with every booking.'},
+    {icon:'🌙',title:'Open 24/7',desc:'Book any hour, any day. Early mornings or late nights — always open.'},
+    {icon:'📍',title:'Prime Location',desc:'寶源亞洲中心, Lai Chi Kok. 1 min from Exit A of Lai Chi Kok MTR.'},
+    {icon:'📲',title:'Instant Booking',desc:'Book in under a minute. Slot held instantly. Pay via FPS or PayMe.'}
+  ],
+  'sl-inv':'Equipment','st-inv':'Gear <em>availability.</em>','sd-inv':'Live equipment status. All gear included with every booking.',
+  inv:[
+    {cls:'pa',icon:'🏓',title:'Paddles',badge:'Available',bc:'ibg',rows:[['Beginner','dok','6 available'],['Intermediate','dok','4 available'],['Advanced','dlw','2 remaining']]},
+    {cls:'ba',icon:'🟡',title:'Balls',badge:'Available',bc:'ibg',rows:[['Onix indoor','dok','12 available'],['Outdoor','dok','8 available'],['Practice','dlw','3 remaining']]},
+    {cls:'sh',icon:'👟',title:'Rental Shoes',badge:'Limited',bc:'ibo',rows:[['Size 38–40','dok','3 pairs'],['Size 41–43','dlw','1 pair'],['Size 44–46','dout','Out of stock']]}
+  ],
+  'inv-note':'* Paddles & balls included with all bookings. Shoes: HKD $30/session. <a href="https://wa.me/'+WA+'" style="color:var(--g);font-weight:600">WhatsApp us</a> to reserve gear.',
+  'sl-l':'Find Us','st-l':'We\'re in<br/><em>Lai Chi Kok.</em>','loc-h3':'Getting here',
+  locRows:[
+    {i:'🚇',t:'MTR',d:'Lai Chi Kok Station, Exit A · 1 min walk'},
+    {i:'📍',t:'Address',d:'寶源亞洲中心, Lai Chi Kok, Kowloon'},
+    {i:'🕐',t:'Hours',d:'Open 24 hours, 7 days a week'},
+    {i:'📞',t:'WhatsApp',d:'<a href="https://wa.me/'+WA+'">+852 9474 7571</a>'},
+    {i:'✉️',t:'Email',d:'<a href="mailto:hello@alldaypickleco.com">hello@alldaypickleco.com</a>'}
+  ],
+  'loc-contact-link':'More ways to reach us →',
+  stepLabels:['Date','Court','Time','Review'],
+  s1h:'When are you playing?',s1p:'Pick a date — up to 60 days ahead.',
+  s2h:'Which court?',s2p:'Paddles & balls included with every booking.',
+  s3h:'What time?',s3p:'Open 24/7. Pick your start time.',
+  s4h:'Review & Hold',s4p:'We hold your slot for 5 hours while you pay.',
+  back:'← Back',cc:'Choose a Court →',ct:'Choose Time →',rb:'Review Booking →',
+  hold:'Hold My Slot →',nl:'Your Name',np:'e.g. Jeff',pl:'WhatsApp Number',pp:'+852 9XXX XXXX',
+  ht:'Slot held for you!',hs:'Pay within <strong>5 hours</strong> to confirm.',
+  fpsl:'FPS 轉數快',ws:'I\'ve paid — Send confirmation',
+  hf:'Include payment screenshot · We confirm within minutes',
+  tn:'By continuing you agree to our <a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" style="color:var(--o);font-weight:700">Terms & Conditions</a>.',
+  hs2:'Held 5 hours · No charge until you pay',tot:'Total',
+  'sl-faq':'FAQ','st-faq':'Common <em>questions.</em>',
+  faqs:[
+    {q:'Do I need to bring my own equipment?',a:'No — paddles and balls are included with every booking. Just show up and play.'},
+    {q:'How do I pay?',a:'Via FPS 轉數快 or PayMe. After booking, send your payment screenshot to WhatsApp +852 9474 7571 and we\'ll confirm within minutes.'},
+    {q:'How long is my slot held after booking?',a:'5 hours. If payment isn\'t received, the slot is automatically released.'},
+    {q:'Can I book more than 4 hours?',a:'Yes — WhatsApp us at +852 9474 7571 and we\'ll arrange it manually.'},
+    {q:'Is there parking nearby?',a:'We recommend the MTR (Lai Chi Kok Exit A, 1 min walk). Paid parking is available in the building.'},
+    {q:'Can I host a private event or corporate outing?',a:'Absolutely — book Both Courts and WhatsApp us to discuss event packages.'},
+    {q:'How do I join an event or open play session?',a:'WhatsApp us at +852 9474 7571. Events are announced on our Instagram and WhatsApp community.'}
+  ],
+  'sl-cta':'Ready to play?','st-cta':'See you on the court.','sd-cta':'寶源亞洲中心 · Lai Chi Kok · Open 24/7',
+  'cta-b1':'Book Now','cta-b2':'Contact Us',
+  'ft-desc':'Hong Kong\'s friendliest pickleball courts. Open 24/7 at Lai Chi Kok. Good energy, good taste, and a great game.',
+  'fc-nav':'Navigate','fc-con':'Connect',
+  fnav:['Courts','Events','Pricing','Location','Contact'],'fn-terms':'Terms & Conditions',
+  'ft-made':'Made with 🏓 in Hong Kong','wa-lbl':'Need help?',
+  months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  days:['Mo','Tu','We','Th','Fr','Sa','Su'],
+  dayNames:['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+},
+zh:{
+  ldrTag:'好玩 · 好味 · 打好波',
+  banner:'🎉 <strong>試業優惠 Soft Opening</strong> — <a href="https://wa.me/'+WA+'" style="color:#8CC63F;font-weight:700">WhatsApp 聯絡我們</a>',
+  nav:['球場','活動','收費','位置','聯絡我們','立即預約'],
+  'hero-h1':'享受運動，<br/><em>享受生活。</em>',
+  'hero-sub':'寶源亞洲中心 · 荔枝角港鐵站步行1分鐘',
+  'hero-det':'24小時全年無休 · 提供球拍及匹克球 · 兩個球場',
+  'hero-b1':'預約球場','hero-b2':'追蹤 Instagram',
+  'sl-bk':'預約時段','st-bk':'60秒內<br/><em>完成預約。</em>',
+  'sd-bk':'選擇日期、球場及時間，即時鎖定時段，保留5小時等待付款。',
+  trust:['✓ 即時確認','✓ 24小時開放','✓ 包球拍及匹克球','✓ 轉數快 · PayMe'],
+  'sl-c':'我們的設施','st-c':'兩個球場，<br/><em>同一種精神。</em>',
+  'sd-c':'兩個球場均提供球拍、匹克球及一切所需裝備。24小時全年無休。',
+  courts:[
+    {badge:'A 場',name:'主場',sub:'正規比賽場地',desc:'標準規格比賽球場，適合正式對賽及認真練習。',tags:['標準規格','包球拍','包匹克球','24小時']},
+    {badge:'B 場',name:'練習場',sub:'練習場 · 面積較細',desc:'較小球場，適合初學者、練習Dinking及單打。',tags:['初學者友好','包球拍','包匹克球','24小時']},
+    {badge:'全場',name:'兩個球場',sub:'全場 · 適合團體及活動',desc:'租用整個場地，主場 + 練習場，適合大型團體及企業活動。',tags:['兩個球場','全場租用','團體活動','企業活動'],dark:true}
+  ],
+  book:'立即預約 →',
+  'sl-p':'收費','st-p':'收費簡單，<br/><em>清晰透明。</em>',
+  'sd-p':'繁忙時段：週末早上8時起，平日下午6時起。預約多小時自動享有折扣。',
+  'pt-op':'🌙 非繁忙時段','pt-pk':'☀️ 繁忙時段',
+  rows:[['主場','$300/小時','$400/小時'],['練習場','$200/小時','$300/小時'],['全場','$500/小時','$700/小時']],
+  'd2h':'預約2小時折扣','d3h':'預約3至4小時折扣',
+  pnote:'💳 可使用 FPS 轉數快 或 PayMe 付款。付款後請於 WhatsApp 傳送收款截圖以確認預約。',
+  'sl-ev':'活動及課程','st-ev':'加入我們，<br/><em>一起打波。</em>',
+  'sd-ev':'由輕鬆的開放練習到初學者課程——Allday Pickle 總有精彩活動等你參與。',
+  events:[
+    {type:'open',typeLabel:'開放練習',stripe:'#7DC52E',date:'每個星期六及日',title:'週末開放練習',desc:'隨時加入，認識新球友，享受輕鬆的對練。歡迎所有程度的球員參與。',time:'10:00 – 13:00',spots:'自由參加',wa:true},
+    {type:'clinic',typeLabel:'初學者課程',stripe:'#F47820',date:'每個星期二',title:'初學者入門課程',desc:'從未拿過球拍？我們的課程涵蓋基本規則、計分方法、技術要領及球場禮儀。',time:'19:00 – 21:00',spots:'最多8人',wa:true},
+    {type:'product',typeLabel:'ADPC 專屬活動',stripe:'#1B5C3F',date:'每月一次 — 詳情請留意WhatsApp',title:'Allday Pickle 產品測試活動',desc:'搶先試用我們即將推出的球拍及匹克球。僅限社群成員參與，名額有限。',time:'待定',spots:'僅限受邀者',wa:true}
+  ],
+  'ev-cta':'WhatsApp 我們報名活動 →',
+  'sl-am':'包含設施','st-am':'打波所需，<br/><em>一應俱全。</em>','sd-am':'直接來打波，無需自備任何裝備。',
+  am:[
+    {icon:'🏓',title:'球拍及匹克球',desc:'每次預約均包含優質球拍及Onix匹克球，無需額外收費。'},
+    {icon:'🌙',title:'24小時開放',desc:'任何時間、任何日子均可預約，清晨至深夜，隨時恭候。'},
+    {icon:'📍',title:'黃金地段',desc:'荔枝角寶源亞洲中心，港鐵荔枝角站A出口步行1分鐘。'},
+    {icon:'📲',title:'即時預約',desc:'一分鐘完成預約，即時鎖定時段，FPS或PayMe付款。'}
+  ],
+  'sl-inv':'裝備','st-inv':'裝備<em>供應情況</em>','sd-inv':'實時裝備狀態，所有裝備均包含於預約之內。',
+  inv:[
+    {cls:'pa',icon:'🏓',title:'球拍',badge:'供應中',bc:'ibg',rows:[['初學者球拍','dok','6支可用'],['中級球拍','dok','4支可用'],['高級球拍','dlw','剩餘2支']]},
+    {cls:'ba',icon:'🟡',title:'匹克球',badge:'供應中',bc:'ibg',rows:[['Onix室內球','dok','12個可用'],['室外球','dok','8個可用'],['練習球','dlw','剩餘3個']]},
+    {cls:'sh',icon:'👟',title:'租借球鞋',badge:'數量有限',bc:'ibo',rows:[['碼數38–40','dok','3對'],['碼數41–43','dlw','1對'],['碼數44–46','dout','暫時缺貨']]}
+  ],
+  'inv-note':'* 所有預約均包含球拍及匹克球。球鞋租借每次港幣$30。如需預先預留裝備，請 <a href="https://wa.me/'+WA+'" style="color:var(--g);font-weight:600">WhatsApp 聯絡我們</a>。',
+  'sl-l':'找到我們','st-l':'我們在<br/><em>荔枝角。</em>','loc-h3':'前往方法',
+  locRows:[
+    {i:'🚇',t:'港鐵',d:'荔枝角站 A 出口，步行約1分鐘'},
+    {i:'📍',t:'地址',d:'九龍荔枝角寶源亞洲中心'},
+    {i:'🕐',t:'營業時間',d:'24小時全年無休'},
+    {i:'📞',t:'WhatsApp',d:'<a href="https://wa.me/'+WA+'">+852 9474 7571</a>'},
+    {i:'✉️',t:'電郵',d:'<a href="mailto:hello@alldaypickleco.com">hello@alldaypickleco.com</a>'}
+  ],
+  'loc-contact-link':'更多聯絡方式 →',
+  stepLabels:['日期','球場','時間','確認'],
+  s1h:'選擇日期',s1p:'選擇最多60天內的日期。',
+  s2h:'選擇球場',s2p:'每次預約均包含球拍及匹克球。',
+  s3h:'選擇時間',s3p:'24小時開放，請選擇開始時間。',
+  s4h:'確認及鎖定時段',s4p:'我們將為您保留時段5小時，請於此期間完成付款。',
+  back:'← 返回',cc:'選擇球場 →',ct:'選擇時間 →',rb:'確認預約 →',
+  hold:'鎖定時段 →',nl:'您的姓名',np:'例如：陳大文',pl:'WhatsApp 號碼',pp:'+852 9XXX XXXX',
+  ht:'時段已保留！',hs:'請於 <strong>5小時內</strong> 完成付款以確認預約。',
+  fpsl:'FPS 轉數快',ws:'已付款 — 傳送確認截圖',
+  hf:'請附上付款截圖，我們將於數分鐘內確認',
+  tn:'繼續即代表您同意我們的 <a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" style="color:var(--o);font-weight:700">條款及細則</a>。',
+  hs2:'保留5小時 · 付款前不收取任何費用',tot:'合計',
+  'sl-faq':'常見問題','st-faq':'常見<em>問題解答</em>',
+  faqs:[
+    {q:'需要自備裝備嗎？',a:'不需要。每次預約均包含球拍及匹克球，直接來打波就好。'},
+    {q:'如何付款？',a:'可使用FPS轉數快或PayMe。付款後請透過WhatsApp（+852 9474 7571）傳送截圖，我們將於數分鐘內確認。'},
+    {q:'時段可以保留多久？',a:'保留5小時。若未於此時間內收到付款，時段將自動釋放。'},
+    {q:'可以預約超過4小時嗎？',a:'可以，請直接WhatsApp我們（+852 9474 7571）安排。'},
+    {q:'附近有停車場嗎？',a:'建議乘搭港鐵（荔枝角站A出口，步行約1分鐘）。大廈內設有收費停車場。'},
+    {q:'可以舉辦私人活動嗎？',a:'可以，預約全場並WhatsApp我們了解活動套餐詳情。'},
+    {q:'如何報名參加活動？',a:'WhatsApp我們（+852 9474 7571）即可。活動詳情亦會在Instagram及WhatsApp社群公布。'}
+  ],
+  'sl-cta':'準備好了嗎？','st-cta':'球場上見。','sd-cta':'寶源亞洲中心 · 荔枝角 · 24小時開放',
+  'cta-b1':'立即預約','cta-b2':'聯絡我們',
+  'ft-desc':'香港最友善的匹克球場地，位於荔枝角，24小時全年無休。充滿活力，享受生活，打好每一球。',
+  'fc-nav':'導覽','fc-con':'聯絡',
+  fnav:['球場','活動','收費','位置','聯絡我們'],'fn-terms':'條款及細則',
+  'ft-made':'在香港以 🏓 製作','wa-lbl':'需要幫助？',
+  months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+  days:['一','二','三','四','五','六','日'],
+  dayNames:['週日','週一','週二','週三','週四','週五','週六']
+},
+ja:{
+  ldrTag:'最高のエナジー · 最高のゲーム',
+  banner:'🎉 <strong>ソフトオープン中</strong> — <a href="https://wa.me/'+WA+'" style="color:#8CC63F;font-weight:700">WhatsAppでお問い合わせ</a>',
+  nav:['コート','イベント','料金','アクセス','お問い合わせ','今すぐ予約'],
+  'hero-h1':'最高のエナジー、<br/><em>最高のゲーム。</em>',
+  'hero-sub':'寶源亞洲中心 · 荔枝角MTRから徒歩1分',
+  'hero-det':'24時間営業 · ボール＆パドル込み · コート2面',
+  'hero-b1':'コートを予約する','hero-b2':'Instagramをフォロー',
+  'sl-bk':'スロットを予約','st-bk':'60秒で<br/><em>コートを予約。</em>',
+  'sd-bk':'日付・コート・時間を選ぶだけ。スロットを5時間確保します。',
+  trust:['✓ 即時確認','✓ 24時間営業','✓ パドル＆ボール込み','✓ FPS・PayMe対応'],
+  'sl-c':'施設情報','st-c':'2つのコート、<br/><em>1つの情熱。</em>',
+  'sd-c':'両コートにパドル・ボール完備。24時間年中無休でご利用いただけます。',
+  courts:[
+    {badge:'コートA',name:'ホームコート',sub:'主場 · 公式サイズ',desc:'正規サイズの競技コート。試合や本格的な練習に最適です。',tags:['正規サイズ','パドル込み','ボール込み','24時間']},
+    {badge:'コートB',name:'練習コート',sub:'練習場 · コンパクト',desc:'初心者・ディンク練習・1対1プレーに最適なコンパクトコート。',tags:['初心者向け','パドル込み','ボール込み','24時間']},
+    {badge:'全面',name:'両コート',sub:'全場 · グループ・イベント',desc:'施設全体をご予約いただけます。グループやイベントに最適。',tags:['両コート','施設全体','グループ','イベント'],dark:true}
+  ],
+  book:'予約する →',
+  'sl-p':'料金','st-p':'シンプルで<br/><em>明瞭な料金体系。</em>',
+  'sd-p':'ピーク時間：週末は8時以降、平日は18時以降。複数時間割引は自動適用されます。',
+  'pt-op':'🌙 オフピーク','pt-pk':'☀️ ピーク時間',
+  rows:[['ホームコート','$300/時間','$400/時間'],['練習コート','$200/時間','$300/時間'],['両コート','$500/時間','$700/時間']],
+  'd2h':'2時間予約で割引','d3h':'3〜4時間予約で割引',
+  pnote:'💳 FPS轉數快またはPayMeでお支払いください。支払い後、WhatsAppにスクリーンショットをお送りください。',
+  'sl-ev':'イベント＆セッション','st-ev':'コートで<br/><em>一緒に楽しもう。</em>',
+  'sd-ev':'気軽なオープンプレイから初心者クリニックまで — Allday Pickleでは常に何かが開催されています。',
+  events:[
+    {type:'open',typeLabel:'オープンプレイ',stripe:'#7DC52E',date:'毎週土曜・日曜',title:'週末オープンプレイ',desc:'飛び入り参加OK。新しい仲間と出会い、Allday Pickleコミュニティとカジュアルなラリーを楽しもう。',time:'10:00 – 13:00',spots:'自由参加',wa:true},
+    {type:'clinic',typeLabel:'初心者クリニック',stripe:'#F47820',date:'毎週火曜日',title:'初心者クリニック',desc:'パドルを持ったことがない方も大歓迎。ルール・スコアリング・基本技術・コートマナーを丁寧に指導します。',time:'19:00 – 21:00',spots:'最大8名',wa:true},
+    {type:'product',typeLabel:'ADPC限定',stripe:'#1B5C3F',date:'月1回 — 詳細はWhatsAppで',title:'Allday Pickle 製品テストセッション',desc:'新作パドルやボールをいち早く体験できる限定セッション。コミュニティメンバー限定・少人数制。',time:'TBA',spots:'招待制',wa:true}
+  ],
+  'ev-cta':'イベント参加はWhatsAppで →',
+  'sl-am':'含まれるもの','st-am':'プレイに必要な<br/><em>すべてが揃っています。</em>','sd-am':'手ぶらでお越しください。',
+  am:[
+    {icon:'🏓',title:'パドル＆ボール',desc:'全予約にOnixボールと高品質パドルが含まれています。'},
+    {icon:'🌙',title:'24時間営業',desc:'何時でも、何曜日でも予約可能。早朝でも深夜でも常に開放。'},
+    {icon:'📍',title:'好立地',desc:'荔枝角寶源亞洲中心。荔枝角MTR出口Aから徒歩1分。'},
+    {icon:'📲',title:'即時予約',desc:'1分以内に予約完了。スロットは即時確保。FPS・PayMeで支払い。'}
+  ],
+  'sl-inv':'用具','st-inv':'用具の<em>空き状況</em>','sd-inv':'リアルタイムの用具状況。全用具は予約に含まれています。',
+  inv:[
+    {cls:'pa',icon:'🏓',title:'パドル',badge:'利用可能',bc:'ibg',rows:[['初心者用','dok','6本利用可能'],['中級者用','dok','4本利用可能'],['上級者用','dlw','残り2本']]},
+    {cls:'ba',icon:'🟡',title:'ボール',badge:'利用可能',bc:'ibg',rows:[['Onix室内用','dok','12個利用可能'],['屋外用','dok','8個利用可能'],['練習用','dlw','残り3個']]},
+    {cls:'sh',icon:'👟',title:'レンタルシューズ',badge:'残りわずか',bc:'ibo',rows:[['サイズ38–40','dok','3足'],['サイズ41–43','dlw','1足'],['サイズ44–46','dout','在庫なし']]}
+  ],
+  'inv-note':'* パドル＆ボールは全予約に含まれます。シューズレンタル：HKD $30/回。事前予約は <a href="https://wa.me/'+WA+'" style="color:var(--g);font-weight:600">WhatsApp</a> までご連絡ください。',
+  'sl-l':'アクセス','st-l':'荔枝角に<br/><em>あります。</em>','loc-h3':'アクセス方法',
+  locRows:[
+    {i:'🚇',t:'MTR',d:'荔枝角駅 出口A · 徒歩約1分'},
+    {i:'📍',t:'住所',d:'九龍荔枝角寶源亞洲中心'},
+    {i:'🕐',t:'営業時間',d:'24時間年中無休'},
+    {i:'📞',t:'WhatsApp',d:'<a href="https://wa.me/'+WA+'">+852 9474 7571</a>'},
+    {i:'✉️',t:'メール',d:'<a href="mailto:hello@alldaypickleco.com">hello@alldaypickleco.com</a>'}
+  ],
+  'loc-contact-link':'その他のお問い合わせ方法 →',
+  stepLabels:['日付','コート','時間','確認'],
+  s1h:'いつプレイしますか？',s1p:'最大60日先まで予約可能。',
+  s2h:'コートを選んでください',s2p:'パドル＆ボール込みです。',
+  s3h:'時間帯を選んでください',s3p:'24時間営業。開始時間を選択してください。',
+  s4h:'内容確認＆仮予約',s4p:'お支払いの間、スロットを5時間確保します。',
+  back:'← 戻る',cc:'コートを選ぶ →',ct:'時間を選ぶ →',rb:'予約を確認 →',
+  hold:'スロットを確保する →',nl:'お名前',np:'例：田中',pl:'WhatsApp番号',pp:'+852 9XXX XXXX',
+  ht:'スロットを確保しました！',hs:'確認のため<strong>5時間以内</strong>にお支払いください。',
+  fpsl:'FPS轉數快',ws:'支払い完了 — 確認スクリーンショットを送る',
+  hf:'支払いスクリーンショットを添付 · 数分以内に確認します',
+  tn:'続行することで<a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" style="color:var(--o);font-weight:700">利用規約</a>に同意したものとみなします。',
+  hs2:'5時間確保 · 支払いまで料金不要',tot:'合計',
+  'sl-faq':'よくある質問','st-faq':'よくある<em>質問。</em>',
+  faqs:[
+    {q:'用具を持参する必要がありますか？',a:'不要です。パドルとボールは全予約に含まれています。手ぶらでお越しください。'},
+    {q:'支払い方法は？',a:'FPS轉數快またはPayMeでお支払いください。支払い後にWhatsApp（+852 9474 7571）でスクリーンショットをお送りください。'},
+    {q:'スロットはどのくらい確保されますか？',a:'5時間です。この時間内にお支払いがない場合、スロットは自動的に解放されます。'},
+    {q:'4時間以上の予約は可能ですか？',a:'はい。WhatsApp（+852 9474 7571）で直接ご連絡ください。'},
+    {q:'近くに駐車場はありますか？',a:'MTRをお勧めします（荔枝角駅出口A、徒歩約1分）。建物内に有料駐車場があります。'},
+    {q:'プライベートイベントの開催は可能ですか？',a:'はい。両コートをご予約の上、WhatsAppでお問い合わせください。'},
+    {q:'イベントに参加するにはどうすればいいですか？',a:'WhatsApp（+852 9474 7571）でご連絡ください。イベント情報はInstagramとWhatsAppコミュニティでもお知らせします。'}
+  ],
+  'sl-cta':'プレイの準備はできましたか？','st-cta':'コートでお待ちしています。','sd-cta':'寶源亞洲中心 · 荔枝角 · 24時間営業',
+  'cta-b1':'今すぐ予約','cta-b2':'お問い合わせ',
+  'ft-desc':'香港で最もフレンドリーなピックルボールコート。荔枝角にて24時間年中無休営業。良いエナジー、良いゲームをお楽しみください。',
+  'fc-nav':'ナビゲーション','fc-con':'お問い合わせ',
+  fnav:['コート','イベント','料金','アクセス','お問い合わせ'],'fn-terms':'利用規約',
+  'ft-made':'香港で 🏓 と共に制作','wa-lbl':'お手伝いが必要ですか？',
+  months:['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+  days:['月','火','水','木','金','土','日'],
+  dayNames:['日','月','火','水','木','金','土']
+}
+};
+
+let lang='en',step=1,selDate=null,selCourt=null,startH=null,dur=1,tabIdx=0;
+function L(){return T[lang]}
+function COURTS(){return ALL_COURTS[lang]}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',
+    (b.textContent==='EN'&&l==='en')||(b.textContent==='繁中'&&l==='zh')||(b.textContent==='日'&&l==='ja')));
+  document.querySelectorAll('.mob-lang button').forEach(b=>b.classList.toggle('on',
+    (b.textContent==='English'&&l==='en')||(b.textContent==='繁體中文'&&l==='zh')||(b.textContent==='日本語'&&l==='ja')));
+  selCourt=null;startH=null;dur=1;step=1;
+  renderAll();
+}
+
+function set(id,html,inner=false){const e=document.getElementById(id);if(e){inner?e.innerHTML=html:e.textContent=html}}
+
+function renderAll(){
+  const l=L();
+  document.getElementById('ldr-tag').textContent=l.ldrTag;
+  document.getElementById('t-banner').innerHTML=l.banner;
+  const navIds=['nt-courts','nt-events','nt-pricing','nt-location','nt-contact','nt-book'];
+  const mobIds=['nm-courts','nm-events','nm-pricing','nm-location','nm-contact','nm-book'];
+  l.nav.forEach((v,i)=>{set(navIds[i],v);set(mobIds[i],v)});
+  set('hero-h1',l['hero-h1'],true);set('hero-sub',l['hero-sub']);set('hero-det',l['hero-det']);
+  set('hero-b1',l['hero-b1']);set('hero-b2',l['hero-b2']);
+  set('sl-bk',l['sl-bk']);set('st-bk',l['st-bk'],true);set('sd-bk',l['sd-bk']);
+  document.getElementById('trust-pills').innerHTML=l.trust.map(t=>`<div class="tp">${t}</div>`).join('');
+  set('sl-c',l['sl-c']);set('st-c',l['st-c'],true);set('sd-c',l['sd-c']);
+  document.getElementById('courts-grid').innerHTML=l.courts.map((c,i)=>`
+    <div class="cc">
+      <div class="cc-hd" style="background:${c.dark?'linear-gradient(135deg,#3D1B5C,#1B0F3D)':'linear-gradient(135deg,var(--g),var(--g2))'}">
+        <div class="cc-badge">${c.badge}</div>
+        <div class="cc-name">${c.name}</div>
+        <div class="cc-sub">${c.sub}</div>
+      </div>
+      <div class="cc-bd">
+        <div class="cc-desc">${c.desc}</div>
+        <div class="cc-pr">
+          <div><div class="cc-price">$${COURTS()[i].np}–$${COURTS()[i].pk}</div><div class="cc-plab">/hr · HKD</div></div>
+          <a href="#booking" class="btn-p" style="font-size:12px;padding:9px 16px">${l.book}</a>
+        </div>
+        <div class="cc-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+  set('sl-p',l['sl-p']);set('st-p',l['st-p'],true);set('sd-p',l['sd-p']);
+  set('pt-op',l['pt-op']);set('pt-pk',l['pt-pk']);
+  document.getElementById('pr-op').innerHTML=l.rows.map(r=>`<div class="pr-row"><span>${r[0]}</span><span><strong>${r[1]}</strong></span></div>`).join('');
+  document.getElementById('pr-pk').innerHTML=l.rows.map(r=>`<div class="pr-row"><span>${r[0]}</span><span><strong>${r[2]}</strong></span></div>`).join('');
+  set('d2h',l['d2h']);set('d3h',l['d3h']);set('pnote',l.pnote);
+  set('sl-ev',l['sl-ev']);set('st-ev',l['st-ev'],true);set('sd-ev',l['sd-ev']);
+  document.getElementById('events-grid').innerHTML=l.events.map(ev=>`
+    <div class="ev-card">
+      <div class="ev-stripe" style="background:${ev.stripe}"></div>
+      <div class="ev-body">
+        <div class="ev-type ${ev.type}">${ev.typeLabel}</div>
+        <div class="ev-date">${ev.date}</div>
+        <div class="ev-title">${ev.title}</div>
+        <div class="ev-desc">${ev.desc}</div>
+        <div class="ev-meta">
+          <span class="ev-pill">⏰ ${ev.time}</span>
+          <span class="ev-pill">👥 ${ev.spots}</span>
+        </div>
+        <a href="https://wa.me/${WA}" target="_blank" rel="noreferrer" class="ev-cta">WhatsApp to join →</a>
+      </div>
+    </div>`).join('');
+  set('ev-cta',l['ev-cta']);
+  set('sl-am',l['sl-am']);set('st-am',l['st-am'],true);set('sd-am',l['sd-am']);
+  document.getElementById('am-grid').innerHTML=l.am.map(a=>`
+    <div class="am-card"><div class="am-icon">${a.icon}</div><div class="am-title">${a.title}</div><div class="am-desc">${a.desc}</div></div>`).join('');
+  set('sl-inv',l['sl-inv']);set('st-inv',l['st-inv'],true);set('sd-inv',l['sd-inv']);
+  document.getElementById('inv-grid').innerHTML=l.inv.map(c=>`
+    <div class="inv-card">
+      <div class="inv-hd ${c.cls}"><div class="inv-ititle">${c.icon} ${c.title}</div><div class="inv-badge ${c.bc}">${c.badge}</div></div>
+      <div class="inv-body">${c.rows.map(r=>`<div class="inv-row"><span>${r[0]}</span><div class="inv-st"><span class="dot ${r[1]}"></span>${r[2]}</div></div>`).join('')}</div>
+    </div>`).join('');
+  document.getElementById('inv-note').innerHTML=l['inv-note'];
+  set('sl-l',l['sl-l']);set('st-l',l['st-l'],true);set('loc-h3',l['loc-h3']);
+  document.getElementById('loc-rows').innerHTML=l.locRows.map(r=>`
+    <div class="lrow"><div class="li">${r.i}</div><div class="lc"><strong>${r.t}</strong><span>${r.d}</span></div></div>`).join('');
+  set('loc-contact-link',l['loc-contact-link']);
+  set('sl-faq',l['sl-faq']);set('st-faq',l['st-faq'],true);
+  document.getElementById('faq-list').innerHTML=l.faqs.map(f=>`
+    <div class="faq-item"><div class="fq">${f.q}</div><div class="fa">${f.a}</div></div>`).join('');
+  set('sl-cta',l['sl-cta']);set('st-cta',l['st-cta']);set('sd-cta',l['sd-cta']);
+  set('cta-b1',l['cta-b1']);set('cta-b2',l['cta-b2']);
+  set('ft-desc',l['ft-desc']);set('fc-nav',l['fc-nav']);set('fc-con',l['fc-con']);
+  const fids=['fn-courts','fn-events','fn-pricing','fn-location','fn-contact'];
+  l.fnav.forEach((v,i)=>set(fids[i],v));
+  set('fn-terms',l['fn-terms']);set('ft-made',l['ft-made']);set('wa-lbl',l['wa-lbl']);
+  renderStep();
+}
+
+/* ── BOOKING ENGINE ── */
+function isPeak(d,h){const w=d.getDay();return(w===0||w===6)?h>=8:h>=18}
+function calcTotal(ct,d,sh,du){
+  let s=0;for(let i=0;i<du;i++){const h=(sh+i)%24;s+=isPeak(d,h)?ct.pk:ct.np}
+  const disc=du>=3?10:du>=2?5:0;const da=Math.round(s*disc/100);
+  return{sub:s,disc,discAmt:da,total:s-da};
+}
+function fmtDate(d){if(!d)return'';const l=L();return`${l.dayNames[d.getDay()]}, ${d.getDate()} ${l.months[d.getMonth()]}`}
+function fmtH(h){return String(h%24).padStart(2,'0')+':00'}
+function fmtEnd(sh,du){const e=sh+du;if(e===24)return'00:00(+1)';if(e>24)return String(e-24).padStart(2,'0')+':00(+1)';return String(e).padStart(2,'0')+':00'}
+
+function renderStepBar(){
+  const labels=L().stepLabels;
+  let h='';
+  labels.forEach((lbl,i)=>{
+    const n=i+1,done=step>n,active=step===n;
+    h+=`<div style="display:flex;align-items:flex-start;${i<3?'flex:1':''}">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+        <div class="sdot ${done?'done':active?'active':'idle'}">${done?'✓':n}</div>
+        <div style="font-size:9px;font-weight:700;color:${active?G:done?'#6B8C7A':'#9B9591'};white-space:nowrap">${lbl}</div>
+      </div>
+      ${i<3?`<div class="sline ${step>n?'done':''}"></div>`:''}</div>`;
+  });
+  document.getElementById('stepBar').innerHTML=h;
+}
+
+function renderStep(){
+  renderStepBar();
+  const c=document.getElementById('stepContent');
+  if(step===1)c.innerHTML=rS1();
+  else if(step===2)c.innerHTML=rS2();
+  else if(step===3)c.innerHTML=rS3();
+  else if(step===4)c.innerHTML=rS4();
+}
+
+function rS1(){
+  const l=L(),today=new Date();today.setHours(0,0,0,0);
+  const max=new Date(today);max.setDate(max.getDate()+60);
+  const mths=[0,1,2].map(i=>{const d=new Date(today.getFullYear(),today.getMonth()+i,1);return{year:d.getFullYear(),month:d.getMonth(),label:`${l.months[d.getMonth()]} ${d.getFullYear()}`}});
+  const {year,month}=mths[tabIdx];
+  const fd=(new Date(year,month,1).getDay()+6)%7;
+  const dim=new Date(year,month+1,0).getDate();
+  let tabs='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:12px">';
+  mths.forEach((m,i)=>{tabs+=`<button class="m-tab${tabIdx===i?' on':''}" onclick="tabIdx=${i};renderStep()">${m.label}</button>`});
+  tabs+='</div>';
+  let cal='<div class="cal-grid">';
+  l.days.forEach(d=>{cal+=`<div class="cal-hdr">${d}</div>`});
+  for(let i=0;i<fd;i++)cal+='<div></div>';
+  for(let d=1;d<=dim;d++){
+    const date=new Date(year,month,d);date.setHours(0,0,0,0);
+    const dis=date<today||date>max;
+    const sel=selDate&&selDate.toDateString()===date.toDateString();
+    const isT=date.toDateString()===today.toDateString();
+    cal+=`<button class="cal-day${sel?' sel':''}${isT&&!sel?' today':''}" ${dis?'disabled':''} onclick="if(!${dis}){selDate=new Date(${year},${month},${d});renderStep()}">${d}</button>`;
+  }
+  cal+='</div>';
+  return`<h2 style="font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;margin-bottom:4px;color:#1A1A1A">${l.s1h}</h2>
+  <p style="color:#6B6560;font-size:13px;margin-bottom:14px">${l.s1p}</p>${tabs}
+  <div style="background:#F9F6F1;border-radius:12px;padding:12px 10px;border:1px solid rgba(184,196,202,.4);margin-bottom:13px">${cal}</div>
+  ${selDate?`<div style="text-align:center;font-size:12px;color:${G};font-weight:700;margin-bottom:11px">${fmtDate(selDate)}</div>`:''}
+  <button class="bk-btn" onclick="if(selDate){step=2;renderStep()}" style="background:${selDate?G:'#E8E3DC'};color:${selDate?'white':'#9B9591'};cursor:${selDate?'pointer':'not-allowed'};box-shadow:${selDate?'0 4px 14px rgba(27,92,63,.22)':'none'}">${l.cc}</button>`;
+}
+
+function rS2(){
+  const l=L(),cts=COURTS();
+  const rows=cts.map((ct,i)=>{
+    const sel=selCourt&&selCourt.idx===i;
+    return`<button class="ct-btn${sel?' sel':''}" onclick="selCourt=COURTS()[${i}];renderStep()">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:700;color:#1A1A1A;margin-bottom:2px">${ct.name}</div>
+          <div style="font-size:11px;color:#6B6560">${ct.sub}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:12px;font-weight:700;color:#1A1A1A">$${ct.np}–$${ct.pk}</div>
+          <div style="font-size:10px;color:#9B9591">HKD/hr</div>
+          ${sel?`<div style="color:${G};font-weight:800;font-size:12px;margin-top:2px">✓</div>`:''}
+        </div>
+      </div></button>`;
+  }).join('');
+  return`<button onclick="step=1;renderStep()" style="background:none;border:none;color:#6B6560;cursor:pointer;font-size:13px;margin-bottom:12px;padding:0;font-family:inherit">${l.back}</button>
+  <div style="background:#F9F6F1;border-radius:9px;padding:8px 11px;margin-bottom:14px;font-size:12px;color:${G};font-weight:600">📅 ${fmtDate(selDate)}</div>
+  <h2 style="font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;margin-bottom:4px;color:#1A1A1A">${l.s2h}</h2>
+  <p style="color:#6B6560;font-size:13px;margin-bottom:13px">${l.s2p}</p>${rows}
+  <button class="bk-btn" style="margin-top:4px;background:${selCourt?G:'#E8E3DC'};color:${selCourt?'white':'#9B9591'};cursor:${selCourt?'pointer':'not-allowed'};box-shadow:${selCourt?'0 4px 14px rgba(27,92,63,.22)':'none'}" onclick="if(selCourt){step=3;startH=null;renderStep()}">${l.ct}</button>`;
+}
+
+function rS3(){
+  const l=L();
+  let hrs='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:14px">';
+  for(let h=0;h<24;h++){
+    const sel=startH===h;
+    hrs+=`<button class="hr-btn${sel?' sel':''}" onclick="startH=${h};dur=1;renderStep()">${fmtH(h)}</button>`;
+  }
+  hrs+='</div>';
+  let durS='',priceP='';
+  if(startH!==null){
+    durS=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#9B9591;margin-bottom:8px">Duration</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:13px">`;
+    [1,2,3,4].forEach(d=>{
+      const sel=dur===d,disc=d>=3?10:d>=2?5:0;
+      durS+=`<button class="dur-btn${sel?' sel':''}" onclick="dur=${d};renderStep()">${d}h
+        <div style="font-size:9px;font-weight:400;margin-top:1px;color:${sel?'rgba(255,255,255,.6)':'#9B9591'}">${fmtEnd(startH,d)}</div>
+        ${disc?`<div style="font-size:8px;font-weight:700;color:${sel?'rgba(255,255,255,.8)':G}">-${disc}%</div>`:''}
+      </button>`;
+    });
+    durS+='</div>';
+    const p=calcTotal(selCourt,selDate,startH,dur);
+    priceP=`<div style="background:#F9F6F1;border-radius:10px;padding:12px 13px;margin-bottom:12px;border:1px solid rgba(184,196,202,.35)">
+      ${p.disc>0?`<div style="display:flex;justify-content:space-between;font-size:12px;color:${G};font-weight:600;margin-bottom:4px"><span>-${p.disc}% off</span><span>-HKD $${p.discAmt}</span></div>`:''}
+      <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;color:#1A1A1A"><span>${l.tot}</span><span>HKD $${p.total}</span></div></div>`;
+  }
+  return`<button onclick="step=2;renderStep()" style="background:none;border:none;color:#6B6560;cursor:pointer;font-size:13px;margin-bottom:12px;padding:0;font-family:inherit">${l.back}</button>
+  <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+    <div style="background:#F9F6F1;border-radius:9px;padding:6px 10px;font-size:11px;color:${G};font-weight:600">📅 ${fmtDate(selDate)}</div>
+    <div style="background:#F9F6F1;border-radius:9px;padding:6px 10px;font-size:11px;color:${G};font-weight:600">🏓 ${selCourt.name}</div>
+  </div>
+  <h2 style="font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;margin-bottom:4px;color:#1A1A1A">${l.s3h}</h2>
+  <p style="color:#6B6560;font-size:13px;margin-bottom:13px">${l.s3p}</p>
+  <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#9B9591;margin-bottom:8px">Start Time</div>
+  ${hrs}${durS}${priceP}
+  <button class="bk-btn" onclick="if(startH!==null){step=4;renderStep()}" style="background:${startH!==null?G:'#E8E3DC'};color:${startH!==null?'white':'#9B9591'};cursor:${startH!==null?'pointer':'not-allowed'};box-shadow:${startH!==null?'0 4px 14px rgba(27,92,63,.22)':'none'}">${l.rb}</button>`;
+}
+
+function rS4(){
+  const l=L(),p=calcTotal(selCourt,selDate,startH,dur);
+  return`<button onclick="step=3;renderStep()" style="background:none;border:none;color:#6B6560;cursor:pointer;font-size:13px;margin-bottom:13px;padding:0;font-family:inherit">${l.back}</button>
+  <h2 style="font-family:'DM Serif Display',serif;font-size:19px;font-weight:400;margin-bottom:4px;color:#1A1A1A">${l.s4h}</h2>
+  <p style="color:#6B6560;font-size:13px;margin-bottom:13px">${l.s4p}</p>
+  <div style="background:linear-gradient(135deg,${G},#0F3D27);border-radius:14px;padding:17px;color:white;margin-bottom:12px">
+    <div style="font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.35);margin-bottom:4px">ALLDAY PICKLE CO.</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:3px">${selCourt.name}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.55)">${fmtDate(selDate)} · ${fmtH(startH)}–${fmtEnd(startH,dur)} (${dur}h)</div>
+    <div style="border-top:1px solid rgba(255,255,255,.15);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between">
+      <span style="font-size:13px;font-weight:700">${l.tot}</span><span style="font-size:13px;font-weight:700">HKD $${p.total}</span>
+    </div>
+  </div>
+  <div style="margin-bottom:9px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#9B9591;margin-bottom:5px">${l.nl}</div>
+  <input id="bkN" type="text" placeholder="${l.np}" style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid rgba(184,196,202,.65);background:white;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"/></div>
+  <div style="margin-bottom:13px"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#9B9591;margin-bottom:5px">${l.pl}</div>
+  <input id="bkP" type="tel" placeholder="${l.pp}" style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid rgba(184,196,202,.65);background:white;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box"/></div>
+  <div style="background:rgba(244,120,32,.07);border:1px solid rgba(244,120,32,.2);border-radius:9px;padding:10px 12px;margin-bottom:13px;font-size:11px;color:#7A4A1A">${l.tn}</div>
+  <button class="bk-btn" onclick="holdSlot()" style="background:${G};color:white;cursor:pointer;box-shadow:0 4px 14px rgba(27,92,63,.22)">${l.hold}</button>
+  <p style="text-align:center;font-size:11px;color:#9B9591;margin-top:7px">${l.hs2}</p>`;
+}
+
+function holdSlot(){
+  const l=L();
+  const name=document.getElementById('bkN')?.value?.trim();
+  const phone=document.getElementById('bkP')?.value?.trim();
+  if(!name||!phone){alert(lang==='ja'?'お名前とWhatsApp番号を入力してください。':lang==='zh'?'請輸入姓名及WhatsApp號碼。':'Please enter your name and WhatsApp number.');return;}
+  const p=calcTotal(selCourt,selDate,startH,dur);
+  const bookId='ADPC-'+Date.now().toString(36).toUpperCase();
+  const waMsg=encodeURIComponent(`Hi Allday Pickle! 👋\n\nBooking ID: ${bookId}\n📅 ${fmtDate(selDate)}\n🏓 ${selCourt.name}\n⏰ ${fmtH(startH)}–${fmtEnd(startH,dur)} (${dur}h)\n💰 HKD $${p.total}\n\nPayment sent via FPS. Please confirm! 🙏`);
+  document.getElementById('stepContent').innerHTML=`
+    <div style="text-align:center;padding:14px 0">
+      <div style="font-size:44px;margin-bottom:12px">🏓</div>
+      <div style="background:linear-gradient(135deg,${G},#0F3D27);border-radius:14px;padding:18px;color:white;margin-bottom:13px">
+        <div style="font-size:16px;font-weight:700;margin-bottom:5px">${l.ht}</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:11px">${l.hs}</div>
+        <div style="background:rgba(255,255,255,.12);border-radius:7px;padding:8px;font-family:monospace;font-size:11px;letter-spacing:1px">${bookId}</div>
+      </div>
+      <div style="background:#F9F6F1;border-radius:12px;padding:13px;margin-bottom:11px;text-align:left">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">${selCourt.name}</div>
+        <div style="font-size:12px;color:#6B6560">${fmtDate(selDate)} · ${fmtH(startH)}–${fmtEnd(startH,dur)}</div>
+        <div style="border-top:1px solid rgba(184,196,202,.4);margin-top:9px;padding-top:9px;display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:#1A1A1A"><span>${l.tot}</span><span>HKD $${p.total}</span></div>
+      </div>
+      <div style="background:#F9F6F1;border-radius:12px;padding:13px;margin-bottom:11px;text-align:left">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#9B9591;margin-bottom:7px">${l.fpsl}</div>
+        <div style="font-size:13px;color:#1A1A1A;line-height:2">Phone: <strong>+852 9474 7571</strong><br/>Amount: <strong style="color:${G}">HKD $${p.total}</strong><br/>Remark: <strong>${bookId}</strong></div>
+      </div>
+      <a href="https://wa.me/${WA}?text=${waMsg}" target="_blank" rel="noreferrer" style="display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:13px;border-radius:12px;background:#25D366;color:white;font-size:13px;font-weight:700;text-decoration:none;box-sizing:border-box;margin-bottom:7px">
+        💬 ${l.ws}
+      </a>
+      <p style="font-size:11px;color:#9B9591">${l.hf}</p>
+    </div>`;
+  renderStepBar();
+}
+
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const el=document.getElementById('loader');
+    el.classList.add('hide');
+    setTimeout(()=>el.remove(),800);
+  },1600);
+  renderAll();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Contact Allday Pickle Co. — WhatsApp, email, or find us at Lai Chi Kok, Hong Kong."/>
+<title>Contact | Allday Pickle Co.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#1B5C3F;--g2:#0F3D27;--o:#F47820;--lime:#7DC52E;--wa:#25D366;--cream:#F5F0E8;--dark:#0D1F17;--silver:#B8C4CA;--text:#1A1A1A;--muted:#6B6560;--light:#F9F6F1}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .7s}
+#loader.hide{opacity:0;pointer-events:none}
+.ldr-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:32px;opacity:0;transform:translateY(14px);animation:fup .55s .1s forwards}
+.ldr-circle{width:100px;height:100px;border-radius:50%;border:2px solid rgba(27,92,63,.55);background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-bottom:18px}
+.ldr-bar{width:130px;height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:20px}
+.ldr-fill{height:100%;background:linear-gradient(90deg,var(--g),var(--lime),var(--o));animation:fill 1.2s ease forwards}
+@keyframes fup{to{opacity:1;transform:translateY(0)}}
+@keyframes fill{0%{width:0}100%{width:100%}}
+
+/* LOGO */
+.logo-circle{border-radius:50%;border:1.5px solid rgba(27,92,63,.45);background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.logo-ball{background:var(--lime);border-radius:50%;position:relative;display:inline-flex}
+.logo-ball::after{content:'';position:absolute;inset:15%;border-radius:50%;border:1.5px solid rgba(0,0,0,.22)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(245,240,232,.95);backdrop-filter:blur(14px);border-bottom:1px solid rgba(27,92,63,.1)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:1280px;margin:0 auto;padding:0 5vw}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-wm{display:flex;flex-direction:column;line-height:1.1}
+.nav-wm span:first-child{font-size:13px;font-weight:800;color:var(--g)}
+.nav-wm span:last-child{font-size:13px;font-weight:800;color:var(--o)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:500;transition:.2s;white-space:nowrap}
+.nav-links a:hover{color:var(--g)}
+.lang-sw{display:flex;align-items:center;gap:2px;background:rgba(27,92,63,.07);border-radius:20px;padding:3px}
+.lb{background:none;border:none;color:var(--muted);padding:4px 9px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.lb.on{background:var(--g);color:white}
+.nav-cta{background:var(--o);color:white;padding:8px 16px;border-radius:22px;font-weight:700;font-size:13px;text-decoration:none;transition:.2s;white-space:nowrap}
+.nav-cta:hover{background:#d96b0d}
+.hbg{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:4px}
+.hbg span{width:20px;height:2px;background:var(--text);border-radius:2px;display:block}
+.mob-menu{display:none;position:absolute;top:56px;left:0;right:0;background:rgba(245,240,232,.98);backdrop-filter:blur(16px);border-bottom:1px solid rgba(27,92,63,.1);padding:12px 5vw 18px;flex-direction:column;z-index:99}
+.mob-menu.open{display:flex}
+.mob-menu a{text-decoration:none;color:var(--text);font-size:15px;font-weight:500;padding:11px 0;border-bottom:1px solid rgba(184,196,202,.25)}
+.mob-lang{display:flex;gap:6px;padding:14px 0 6px}
+.mob-lang button{flex:1;padding:9px;border-radius:10px;border:1.5px solid rgba(184,196,202,.5);background:white;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted)}
+.mob-lang button.on{background:var(--g);color:white;border-color:var(--g)}
+.mob-book{margin-top:10px;background:var(--o);color:white;padding:13px;border-radius:14px;text-align:center;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;text-decoration:none;display:block}
+
+/* PAGE HERO */
+.page-hero{background:linear-gradient(160deg,var(--g) 0%,var(--g2) 100%);padding:clamp(60px,8vw,100px) 5vw clamp(48px,6vw,80px);color:white}
+.page-hero-inner{max-width:1280px;margin:0 auto}
+.breadcrumb{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px}
+.breadcrumb a{color:rgba(255,255,255,.4);text-decoration:none;transition:.2s}
+.breadcrumb a:hover{color:rgba(255,255,255,.7)}
+.page-hero h1{font-family:'DM Serif Display',serif;font-size:clamp(36px,6vw,72px);font-weight:400;line-height:1.05;letter-spacing:-.03em;font-style:italic;margin-bottom:14px}
+.page-hero h1 em{font-style:normal;color:var(--o)}
+.page-hero p{font-size:clamp(13px,1.8vw,15px);color:rgba(255,255,255,.5);max-width:480px;line-height:1.7}
+
+/* CONTACT GRID */
+.contact-sec{padding:clamp(52px,7vw,92px) 5vw}
+.contact-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+
+/* CONTACT METHODS */
+.contact-methods{display:flex;flex-direction:column;gap:16px}
+.cm-card{background:white;border-radius:16px;border:1px solid rgba(184,196,202,.4);overflow:hidden;transition:.2s;text-decoration:none;display:block}
+.cm-card:hover{border-color:var(--g);transform:translateY(-2px);box-shadow:0 8px 28px rgba(27,92,63,.1)}
+.cm-card-inner{display:flex;align-items:center;gap:16px;padding:20px 22px}
+.cm-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cm-icon.wa{background:rgba(37,211,102,.12)}
+.cm-icon.ig{background:rgba(244,120,32,.1)}
+.cm-icon.em{background:rgba(27,92,63,.08)}
+.cm-content{flex:1;min-width:0}
+.cm-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--silver);margin-bottom:3px}
+.cm-value{font-size:15px;font-weight:700;color:var(--text)}
+.cm-desc{font-size:12px;color:var(--muted);margin-top:2px}
+.cm-arrow{font-size:18px;color:var(--silver);flex-shrink:0}
+
+/* HOURS & LOCATION */
+.info-block{background:white;border-radius:16px;border:1px solid rgba(184,196,202,.4);padding:24px}
+.info-block+.info-block{margin-top:16px}
+.info-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;margin-bottom:18px;color:var(--text)}
+.info-row{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.info-row:last-child{margin-bottom:0}
+.ir-icon{width:32px;height:32px;border-radius:9px;background:rgba(27,92,63,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.ir-content strong{display:block;font-size:13px;font-weight:700;margin-bottom:2px}
+.ir-content span{font-size:12px;color:var(--muted);line-height:1.6}
+.ir-content a{color:var(--g);font-weight:600;text-decoration:none}
+
+/* MAP PLACEHOLDER */
+.map-block{background:linear-gradient(135deg,var(--g),var(--g2));border-radius:16px;height:200px;display:flex;align-items:center;justify-content:center;color:white;margin-top:16px;position:relative;overflow:hidden}
+.map-block-text{text-align:center}
+.map-block-text strong{display:block;font-family:'DM Serif Display',serif;font-size:18px;margin-bottom:4px}
+.map-block-text span{font-size:12px;color:rgba(255,255,255,.5)}
+.map-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:white;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;transition:.2s}
+.map-btn:hover{background:rgba(255,255,255,.25)}
+
+/* FORM */
+.form-block{background:white;border-radius:16px;border:1px solid rgba(184,196,202,.4);padding:28px}
+.form-title{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;margin-bottom:6px}
+.form-desc{font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.6}
+.form-row{margin-bottom:14px}
+.form-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--silver);margin-bottom:6px}
+.form-input{width:100%;padding:11px 13px;border-radius:9px;border:1.5px solid rgba(184,196,202,.65);background:white;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;transition:.2s;color:var(--text)}
+.form-input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(27,92,63,.08)}
+.form-select{width:100%;padding:11px 13px;border-radius:9px;border:1.5px solid rgba(184,196,202,.65);background:white;font-size:13px;font-family:inherit;outline:none;box-sizing:border-box;color:var(--text);cursor:pointer}
+.form-select:focus{border-color:var(--g)}
+textarea.form-input{resize:vertical;min-height:100px;line-height:1.6}
+.form-submit{width:100%;padding:14px;border-radius:12px;border:none;background:var(--g);color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;box-shadow:0 4px 14px rgba(27,92,63,.25)}
+.form-submit:hover{background:var(--g2);transform:translateY(-1px)}
+.form-note{font-size:11px;color:var(--silver);margin-top:10px;text-align:center;line-height:1.6}
+.form-success{display:none;text-align:center;padding:20px 0}
+.form-success .fs-icon{font-size:44px;margin-bottom:12px}
+.form-success h3{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;margin-bottom:8px}
+.form-success p{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* CTA */
+.cta-sec{background:linear-gradient(160deg,var(--g),var(--g2));text-align:center;padding:clamp(52px,7vw,80px) 5vw}
+.cta-sec .st{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,50px);font-weight:400;line-height:1.1;color:white;margin-bottom:12px}
+.btn-p{background:var(--o);color:white;padding:13px 26px;border-radius:30px;border:none;font-size:clamp(13px,1.8vw,15px);font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;box-shadow:0 6px 20px rgba(244,120,32,.4);font-family:inherit;white-space:nowrap;display:inline-block}
+.btn-p:hover{transform:translateY(-2px);background:#d96b0d}
+.btn-o{color:white;padding:13px 22px;border-radius:30px;border:1.5px solid rgba(255,255,255,.2);font-size:clamp(13px,1.8vw,14px);font-weight:600;text-decoration:none;font-family:inherit;white-space:nowrap;background:transparent;display:inline-block}
+.btn-o:hover{background:rgba(255,255,255,.08)}
+
+/* FOOTER */
+footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
+.ft-inner{max-width:1280px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:44px;margin-bottom:32px}
+.ft-brand p{font-size:12px;color:rgba(255,255,255,.3);line-height:1.7;max-width:240px;margin-top:11px}
+.ft-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.28);margin-bottom:12px}
+.ft-col a{display:block;color:rgba(255,255,255,.5);text-decoration:none;font-size:12px;margin-bottom:8px;transition:.2s}
+.ft-col a:hover{color:white}
+.ft-bot{border-top:1px solid rgba(255,255,255,.07);padding-top:18px;display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.18);flex-wrap:wrap;gap:6px}
+
+.wa-float{position:fixed;bottom:18px;right:14px;background:var(--wa);color:white;padding:10px 16px;border-radius:30px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 6px 18px rgba(37,211,102,.35);z-index:99;transition:.2s;display:flex;align-items:center;gap:6px}
+.wa-float:hover{transform:translateY(-2px)}
+
+@media(max-width:900px){
+  .contact-inner{grid-template-columns:1fr}
+  .ft-top{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav-links,.lang-sw,.nav-cta{display:none}
+  .hbg{display:flex}
+  .ft-top{grid-template-columns:1fr}
+  .wa-txt{display:none}
+  .wa-float{padding:12px;border-radius:50%;width:46px;height:46px;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="ldr-wrap">
+    <div class="ldr-circle">
+      <div style="font-size:16px;font-weight:800;color:var(--g);line-height:1">allday</div>
+      <div style="font-size:16px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+      <div style="display:flex;align-items:center;gap:1px;line-height:1">
+        <span style="font-size:16px;font-weight:800;color:var(--g)">c</span>
+        <div style="width:13px;height:13px;background:var(--lime);border-radius:50%;position:relative"><div style="position:absolute;inset:14%;border-radius:50%;border:1.5px solid rgba(0,0,0,.22)"></div></div>
+        <span style="font-size:16px;font-weight:800;color:var(--g)">.</span>
+      </div>
+    </div>
+  </div>
+  <div class="ldr-bar"><div class="ldr-fill"></div></div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-circle" style="width:36px;height:36px">
+        <div style="font-size:7.5px;font-weight:800;color:var(--g);line-height:1">allday</div>
+        <div style="font-size:7.5px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+        <div style="display:flex;align-items:center;gap:1px">
+          <span style="font-size:7.5px;font-weight:800;color:var(--g)">c</span>
+          <div class="logo-ball" style="width:6px;height:6px"></div>
+          <span style="font-size:7.5px;font-weight:800;color:var(--g)">.</span>
+        </div>
+      </div>
+      <div class="nav-wm"><span>allday</span><span>pickle co.</span></div>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="index.html#courts" id="nt-courts"></a>
+        <a href="index.html#events" id="nt-events"></a>
+        <a href="index.html#pricing" id="nt-pricing"></a>
+        <a href="index.html#location" id="nt-location"></a>
+        <a href="contact.html" style="color:var(--g)!important;font-weight:700!important" id="nt-contact"></a>
+      </div>
+      <div class="lang-sw">
+        <button class="lb on" onclick="setLang('en')">EN</button>
+        <button class="lb" onclick="setLang('zh')">繁中</button>
+        <button class="lb" onclick="setLang('ja')">日</button>
+      </div>
+      <a href="index.html#booking" class="nav-cta" id="nt-book"></a>
+    </div>
+    <button class="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mob-menu" id="mobMenu">
+    <a href="index.html#courts" id="nm-courts"></a>
+    <a href="index.html#events" id="nm-events"></a>
+    <a href="index.html#pricing" id="nm-pricing"></a>
+    <a href="index.html#location" id="nm-location"></a>
+    <a href="contact.html" id="nm-contact"></a>
+    <div class="mob-lang">
+      <button class="on" onclick="setLang('en');toggleMenu()">English</button>
+      <button onclick="setLang('zh');toggleMenu()">繁體中文</button>
+      <button onclick="setLang('ja');toggleMenu()">日本語</button>
+    </div>
+    <a href="index.html#booking" class="mob-book" id="nm-book"></a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <span id="bc-contact"></span></div>
+    <h1 id="page-h1"></h1>
+    <p id="page-sub"></p>
+  </div>
+</div>
+
+<section class="contact-sec">
+  <div class="contact-inner">
+    <!-- LEFT: contact methods + info -->
+    <div>
+      <div class="contact-methods" id="contact-methods"></div>
+
+      <div class="info-block" style="margin-top:16px">
+        <div class="info-title" id="info-title-hours"></div>
+        <div class="info-row">
+          <div class="ir-icon">🕐</div>
+          <div class="ir-content"><strong id="hours-label"></strong><span id="hours-value"></span></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon">🏓</div>
+          <div class="ir-content"><strong id="courts-label"></strong><span id="courts-value"></span></div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-title" id="info-title-loc"></div>
+        <div class="info-row">
+          <div class="ir-icon">📍</div>
+          <div class="ir-content"><strong id="addr-label"></strong><span>寶源亞洲中心<br/>Lai Chi Kok, Kowloon</span></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon">🚇</div>
+          <div class="ir-content"><strong id="mtr-label"></strong><span id="mtr-value"></span></div>
+        </div>
+      </div>
+
+      <div class="map-block">
+        <div class="map-block-text">
+          <strong>A.D.P.C.</strong>
+          <span>寶源亞洲中心, Lai Chi Kok</span>
+          <div>
+            <a href="https://maps.google.com/?q=寶源亞洲中心+Lai+Chi+Kok" target="_blank" rel="noreferrer" class="map-btn">📍 Open in Maps</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: enquiry form -->
+    <div>
+      <div class="form-block">
+        <div class="form-title" id="form-title"></div>
+        <div class="form-desc" id="form-desc"></div>
+        <div id="form-body">
+          <div class="form-row">
+            <label class="form-label" id="fl-name"></label>
+            <input class="form-input" type="text" id="f-name" />
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="fl-phone"></label>
+            <input class="form-input" type="tel" id="f-phone" />
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="fl-email"></label>
+            <input class="form-input" type="email" id="f-email" />
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="fl-topic"></label>
+            <select class="form-select" id="f-topic"></select>
+          </div>
+          <div class="form-row">
+            <label class="form-label" id="fl-msg"></label>
+            <textarea class="form-input" id="f-msg" rows="4"></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()" id="f-submit"></button>
+          <div class="form-note" id="f-note"></div>
+        </div>
+        <div class="form-success" id="form-success">
+          <div class="fs-icon">🏓</div>
+          <h3 id="fs-title"></h3>
+          <p id="fs-desc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-sec">
+  <div style="max-width:1280px;margin:0 auto;text-align:center">
+    <div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;font-weight:700;color:var(--lime);margin-bottom:12px" id="sl-cta"></div>
+    <div class="st" id="st-cta"></div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px">
+      <a href="index.html#booking" class="btn-p" id="cta-b1"></a>
+      <a href="https://wa.me/85294747571" target="_blank" rel="noreferrer" class="btn-o" id="cta-b2"></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <a href="index.html" style="display:flex;align-items:center;gap:9px;text-decoration:none">
+          <div class="logo-circle" style="width:40px;height:40px">
+            <div style="font-size:8px;font-weight:800;color:var(--g);line-height:1">allday</div>
+            <div style="font-size:8px;font-weight:800;color:var(--o);line-height:1">pickle</div>
+            <div style="display:flex;align-items:center;gap:1px">
+              <span style="font-size:8px;font-weight:800;color:var(--g)">c</span>
+              <div class="logo-ball" style="width:7px;height:7px"></div>
+              <span style="font-size:8px;font-weight:800;color:var(--g)">.</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;line-height:1.1">
+            <span style="font-size:13px;font-weight:800;color:var(--g)">allday</span>
+            <span style="font-size:13px;font-weight:800;color:var(--o)">pickle co.</span>
+          </div>
+        </a>
+        <p id="ft-desc"></p>
+      </div>
+      <div class="ft-col">
+        <h4 id="fc-nav"></h4>
+        <a href="index.html#courts" id="fn-courts"></a>
+        <a href="index.html#events" id="fn-events"></a>
+        <a href="index.html#pricing" id="fn-pricing"></a>
+        <a href="index.html#location" id="fn-location"></a>
+        <a href="contact.html" id="fn-contact"></a>
+      </div>
+      <div class="ft-col">
+        <h4 id="fc-con"></h4>
+        <a href="https://www.instagram.com/alldaypickleco" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://wa.me/85294747571">WhatsApp · +852 9474 7571</a>
+        <a href="mailto:hello@alldaypickleco.com">hello@alldaypickleco.com</a>
+        <a href="https://docs.google.com/document/d/13PHGP1e8kh7lA4UMzfulVtY6JuU3tmnHeHdYPEE1Was" target="_blank" rel="noreferrer" id="fn-terms"></a>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <span>© 2025 Allday Pickle Co. All rights reserved.</span>
+      <span id="ft-made"></span>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/85294747571" class="wa-float" target="_blank" rel="noreferrer">
+  <span style="font-size:16px">💬</span><span class="wa-txt" id="wa-lbl"></span>
+</a>
+
+<script>
+const WA='85294747571';
+const T={
+en:{
+  nav:['Courts','Events','Pricing','Location','Contact','Book Now'],
+  'bc-contact':'Contact',
+  'page-h1':'Get in<br/><em>touch.</em>',
+  'page-sub':'Questions about booking, events, or private hire? We\'re just a WhatsApp away.',
+  contacts:[
+    {href:'https://wa.me/'+WA,iconCls:'wa',icon:'💬',label:'WhatsApp',value:'+852 9474 7571',desc:'Fastest response — usually within minutes'},
+    {href:'https://www.instagram.com/alldaypickleco',iconCls:'ig',icon:'📸',label:'Instagram',value:'@alldaypickleco',desc:'Events, updates, and community highlights'},
+    {href:'mailto:hello@alldaypickleco.com',iconCls:'em',icon:'✉️',label:'Email',value:'hello@alldaypickleco.com',desc:'For formal enquiries and event proposals'}
+  ],
+  'info-title-hours':'Hours & availability',
+  'hours-label':'Opening hours','hours-value':'Open 24 hours, 7 days a week',
+  'courts-label':'Courts','courts-value':'Home Court + Practice Court',
+  'info-title-loc':'Find us',
+  'addr-label':'Address',
+  'mtr-label':'MTR','mtr-value':'Lai Chi Kok Station, Exit A · 1 min walk',
+  'form-title':'Send us a message',
+  'form-desc':'Prefer to write? Fill in the form below and we\'ll get back to you on WhatsApp or email.',
+  'fl-name':'Your Name','fl-phone':'WhatsApp Number','fl-email':'Email','fl-topic':'Topic','fl-msg':'Message',
+  topics:['General enquiry','Court booking help','Private event / corporate','Open play & events','Feedback / other'],
+  'f-submit':'Send Message',
+  'f-note':'We\'ll reply via WhatsApp or email within 24 hours.',
+  'fs-title':'Message sent!',
+  'fs-desc':'Thanks for reaching out. We\'ll get back to you on WhatsApp or email shortly. In the meantime, you can also book a court instantly above.',
+  fnav:['Courts','Events','Pricing','Location','Contact'],
+  'sl-cta':'Ready to play?','st-cta':'Book a court, join an event.',
+  'cta-b1':'Book Now','cta-b2':'WhatsApp Us',
+  'ft-desc':'Hong Kong\'s friendliest pickleball courts. Open 24/7 at Lai Chi Kok.',
+  'fc-nav':'Navigate','fc-con':'Connect','fn-terms':'Terms & Conditions',
+  'ft-made':'Made with 🏓 in Hong Kong','wa-lbl':'Need help?'
+},
+zh:{
+  nav:['球場','活動','收費','位置','聯絡我們','立即預約'],
+  'bc-contact':'聯絡我們',
+  'page-h1':'聯絡<br/><em>我們。</em>',
+  'page-sub':'對預約、活動或場地租用有任何疑問？WhatsApp 我們即可。',
+  contacts:[
+    {href:'https://wa.me/'+WA,iconCls:'wa',icon:'💬',label:'WhatsApp',value:'+852 9474 7571',desc:'最快回覆 — 通常於數分鐘內回覆'},
+    {href:'https://www.instagram.com/alldaypickleco',iconCls:'ig',icon:'📸',label:'Instagram',value:'@alldaypickleco',desc:'活動資訊、最新消息及社群動態'},
+    {href:'mailto:hello@alldaypickleco.com',iconCls:'em',icon:'✉️',label:'電郵',value:'hello@alldaypickleco.com',desc:'正式查詢及活動合作提案'}
+  ],
+  'info-title-hours':'開放時間',
+  'hours-label':'營業時間','hours-value':'24小時全年無休',
+  'courts-label':'球場','courts-value':'主場 + 練習場',
+  'info-title-loc':'找到我們',
+  'addr-label':'地址',
+  'mtr-label':'港鐵','mtr-value':'荔枝角站 A 出口，步行約1分鐘',
+  'form-title':'發送訊息',
+  'form-desc':'偏好文字溝通？填寫以下表格，我們將盡快透過WhatsApp或電郵回覆。',
+  'fl-name':'您的姓名','fl-phone':'WhatsApp 號碼','fl-email':'電郵地址','fl-topic':'查詢類別','fl-msg':'訊息內容',
+  topics:['一般查詢','球場預約協助','私人活動/企業團隊','開放練習及活動','意見反饋/其他'],
+  'f-submit':'發送訊息',
+  'f-note':'我們將於24小時內透過WhatsApp或電郵回覆。',
+  'fs-title':'訊息已發送！',
+  'fs-desc':'感謝您聯絡我們。我們將盡快透過WhatsApp或電郵回覆。您也可以立即於上方預約球場。',
+  fnav:['球場','活動','收費','位置','聯絡我們'],
+  'sl-cta':'準備好了嗎？','st-cta':'預約球場，參加活動。',
+  'cta-b1':'立即預約','cta-b2':'WhatsApp 我們',
+  'ft-desc':'香港最友善的匹克球場地，位於荔枝角，24小時全年無休。',
+  'fc-nav':'導覽','fc-con':'聯絡','fn-terms':'條款及細則',
+  'ft-made':'在香港以 🏓 製作','wa-lbl':'需要幫助？'
+},
+ja:{
+  nav:['コート','イベント','料金','アクセス','お問い合わせ','今すぐ予約'],
+  'bc-contact':'お問い合わせ',
+  'page-h1':'お気軽に<br/><em>ご連絡ください。</em>',
+  'page-sub':'予約・イベント・施設貸切についてのご質問はWhatsAppでどうぞ。',
+  contacts:[
+    {href:'https://wa.me/'+WA,iconCls:'wa',icon:'💬',label:'WhatsApp',value:'+852 9474 7571',desc:'最速対応 — 通常数分以内にご返信'},
+    {href:'https://www.instagram.com/alldaypickleco',iconCls:'ig',icon:'📸',label:'Instagram',value:'@alldaypickleco',desc:'イベント情報・最新ニュース・コミュニティ'},
+    {href:'mailto:hello@alldaypickleco.com',iconCls:'em',icon:'✉️',label:'メール',value:'hello@alldaypickleco.com',desc:'正式なお問い合わせ・イベント提案'}
+  ],
+  'info-title-hours':'営業時間',
+  'hours-label':'営業時間','hours-value':'24時間年中無休',
+  'courts-label':'コート','courts-value':'ホームコート + 練習コート',
+  'info-title-loc':'アクセス',
+  'addr-label':'住所',
+  'mtr-label':'MTR','mtr-value':'荔枝角駅 出口A · 徒歩約1分',
+  'form-title':'メッセージを送る',
+  'form-desc':'テキストでのお問い合わせはこちら。WhatsAppまたはメールにて24時間以内にご返信いたします。',
+  'fl-name':'お名前','fl-phone':'WhatsApp番号','fl-email':'メールアドレス','fl-topic':'お問い合わせ内容','fl-msg':'メッセージ',
+  topics:['一般的なお問い合わせ','コート予約サポート','プライベートイベント/法人','オープンプレイ＆イベント','フィードバック/その他'],
+  'f-submit':'メッセージを送る',
+  'f-note':'WhatsAppまたはメールにて24時間以内にご返信いたします。',
+  'fs-title':'送信完了！',
+  'fs-desc':'お問い合わせありがとうございます。WhatsAppまたはメールにてご連絡いたします。コートのご予約は上記からすぐにお申し込みいただけます。',
+  fnav:['コート','イベント','料金','アクセス','お問い合わせ'],
+  'sl-cta':'プレイの準備はできましたか？','st-cta':'コートを予約して、イベントに参加しよう。',
+  'cta-b1':'今すぐ予約','cta-b2':'WhatsAppで問い合わせ',
+  'ft-desc':'香港で最もフレンドリーなピックルボールコート。荔枝角にて24時間年中無休営業。',
+  'fc-nav':'ナビゲーション','fc-con':'お問い合わせ','fn-terms':'利用規約',
+  'ft-made':'香港で 🏓 と共に制作','wa-lbl':'お手伝いが必要ですか？'
+}
+};
+
+let lang='en';
+function L(){return T[lang]}
+
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',
+    (b.textContent==='EN'&&l==='en')||(b.textContent==='繁中'&&l==='zh')||(b.textContent==='日'&&l==='ja')));
+  document.querySelectorAll('.mob-lang button').forEach(b=>b.classList.toggle('on',
+    (b.textContent==='English'&&l==='en')||(b.textContent==='繁體中文'&&l==='zh')||(b.textContent==='日本語'&&l==='ja')));
+  renderAll();
+}
+
+function set(id,val,inner=false){const e=document.getElementById(id);if(e){inner?e.innerHTML=val:e.textContent=val}}
+
+function renderAll(){
+  const l=L();
+  const navIds=['nt-courts','nt-events','nt-pricing','nt-location','nt-contact','nt-book'];
+  const mobIds=['nm-courts','nm-events','nm-pricing','nm-location','nm-contact','nm-book'];
+  l.nav.forEach((v,i)=>{set(navIds[i],v);set(mobIds[i],v)});
+  set('bc-contact',l['bc-contact']);
+  set('page-h1',l['page-h1'],true);set('page-sub',l['page-sub']);
+  document.getElementById('contact-methods').innerHTML=l.contacts.map(c=>`
+    <a href="${c.href}" target="_blank" rel="noreferrer" class="cm-card">
+      <div class="cm-card-inner">
+        <div class="cm-icon ${c.iconCls}">${c.icon}</div>
+        <div class="cm-content">
+          <div class="cm-label">${c.label}</div>
+          <div class="cm-value">${c.value}</div>
+          <div class="cm-desc">${c.desc}</div>
+        </div>
+        <div class="cm-arrow">›</div>
+      </div>
+    </a>`).join('');
+  set('info-title-hours',l['info-title-hours']);
+  set('hours-label',l['hours-label']);set('hours-value',l['hours-value']);
+  set('courts-label',l['courts-label']);set('courts-value',l['courts-value']);
+  set('info-title-loc',l['info-title-loc']);
+  set('addr-label',l['addr-label']);set('mtr-label',l['mtr-label']);set('mtr-value',l['mtr-value']);
+  set('form-title',l['form-title']);set('form-desc',l['form-desc']);
+  set('fl-name',l['fl-name']);set('fl-phone',l['fl-phone']);set('fl-email',l['fl-email']);
+  set('fl-topic',l['fl-topic']);set('fl-msg',l['fl-msg']);
+  document.getElementById('f-topic').innerHTML=l.topics.map(t=>`<option>${t}</option>`).join('');
+  document.getElementById('f-name').placeholder=lang==='zh'?'例如：陳大文':lang==='ja'?'例：田中':'e.g. Jeff';
+  document.getElementById('f-phone').placeholder='+852 9XXX XXXX';
+  document.getElementById('f-email').placeholder='you@example.com';
+  set('f-submit',l['f-submit']);set('f-note',l['f-note']);
+  set('fs-title',l['fs-title']);set('fs-desc',l['fs-desc']);
+  set('sl-cta',l['sl-cta']);set('st-cta',l['st-cta']);
+  set('cta-b1',l['cta-b1']);set('cta-b2',l['cta-b2']);
+  set('ft-desc',l['ft-desc']);set('fc-nav',l['fc-nav']);set('fc-con',l['fc-con']);
+  const fids=['fn-courts','fn-events','fn-pricing','fn-location','fn-contact'];
+  l.fnav.forEach((v,i)=>set(fids[i],v));
+  set('fn-terms',l['fn-terms']);set('ft-made',l['ft-made']);set('wa-lbl',l['wa-lbl']);
+}
+
+function submitForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const topic=document.getElementById('f-topic').value;
+  const msg=document.getElementById('f-msg').value.trim();
+  if(!name||!msg){alert(lang==='ja'?'お名前とメッセージを入力してください。':lang==='zh'?'請輸入姓名及訊息。':'Please enter your name and message.');return;}
+  // Send via WhatsApp
+  const waMsg=encodeURIComponent(`Hi Allday Pickle Co. 👋\n\nName: ${name}\nPhone: ${phone||'—'}\nEmail: ${email||'—'}\nTopic: ${topic}\n\n${msg}`);
+  window.open(`https://wa.me/${WA}?text=${waMsg}`,'_blank');
+  document.getElementById('form-body').style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const el=document.getElementById('loader');
+    el.classList.add('hide');
+    setTimeout(()=>el.remove(),800);
+  },1200);
+  renderAll();
+});
+</script>
+</body>
+</html>
