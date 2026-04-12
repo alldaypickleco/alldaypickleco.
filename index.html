@@ -308,9 +308,9 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
         <a href="contact.html" id="nt-contact"></a>
       </div>
       <div class="lang-sw">
-        <button class="lb on" onclick="setLang('en')">EN</button>
-        <button class="lb" onclick="setLang('zh')">繁中</button>
-        <button class="lb" onclick="setLang('ja')">日</button>
+        <button class="lb on" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lb" data-lang="zh" onclick="setLang('zh')">繁中</button>
+        <button class="lb" data-lang="ja" onclick="setLang('ja')">日</button>
       </div>
       <a href="#booking" class="nav-cta" id="nt-book"></a>
     </div>
@@ -323,9 +323,9 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
     <a href="#location" onclick="toggleMenu()" id="nm-location"></a>
     <a href="contact.html" id="nm-contact"></a>
     <div class="mob-lang">
-      <button class="on" onclick="setLang('en');toggleMenu()">English</button>
-      <button onclick="setLang('zh');toggleMenu()">繁體中文</button>
-      <button onclick="setLang('ja');toggleMenu()">日本語</button>
+      <button class="on" data-lang="en" onclick="setLang('en');toggleMenu()">English</button>
+      <button data-lang="zh" onclick="setLang('zh');toggleMenu()">繁體中文</button>
+      <button data-lang="ja" onclick="setLang('ja');toggleMenu()">日本語</button>
     </div>
     <a href="#booking" class="mob-book" onclick="toggleMenu()" id="nm-book"></a>
   </div>
@@ -564,14 +564,14 @@ en:{
   'sd-p':'Peak hours: weekends from 8am, weekdays from 6pm. Multi-hour discounts applied automatically.',
   'pt-op':'🌙 Off-Peak','pt-pk':'☀️ Peak Hours',
   rows:[['Home Court','$300/hr','$400/hr'],['Practice Court','$200/hr','$300/hr'],['Both Courts','$500/hr','$700/hr']],
-  'd2h':'off for 2-hour booking','d3h':'off for 3–4 hour booking',
+  'd2h':'off for 2-hour booking','d3h':'off for 3 hour booking',
   pnote:'💳 Payment via FPS 轉數快 or PayMe. Send screenshot on WhatsApp to confirm your slot.',
   'sl-ev':'Events & Sessions','st-ev':'Join us on<br/><em>the court.</em>',
   'sd-ev':'From casual open play to beginner clinics — there\'s always something happening at Allday Pickle.',
   events:[
-    {type:'open',typeLabel:'Open Play',stripe:'#7DC52E',date:'Every Saturday & Sunday',title:'Weekend Open Play',desc:'Drop in, meet new players, and enjoy casual rallies with the Allday Pickle community. All levels welcome.',time:'10:00 – 13:00',spots:'Open entry',wa:true},
-    {type:'clinic',typeLabel:'Beginner Clinic',stripe:'#F47820',date:'Every Tuesday',title:'Beginner Clinic',desc:'Never picked up a paddle? Our coached sessions cover the basics — rules, scoring, technique, and court etiquette.',time:'19:00 – 21:00',spots:'Max 8 players',wa:true},
-    {type:'product',typeLabel:'ADPC Exclusive',stripe:'#1B5C3F',date:'Monthly — check WhatsApp for dates',title:'Allday Pickle Product Testing Session',desc:'Be the first to try our upcoming paddle and ball releases. Exclusive to our community — limited spots each session.',time:'TBA',spots:'Invite only',wa:true}
+    {type:'open',typeLabel:'Open Play',stripe:'#7DC52E',date:'Every Saturday & Sunday',title:'Weekend Open Play',desc:'Drop in, meet new players, and enjoy casual rallies with the Allday Pickle community. All levels welcome.',time:'10:00 – 13:00',spots:'Open entry',wa:true,calUrl:'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Weekend+Open+Play+%40+Allday+Pickle+Co.&details=Drop+in+and+play+at+Allday+Pickle+Co.,+%E5%AF%B6%E6%BA%90%E4%BA%9E%E6%B4%B2%E4%B8%AD%E5%BF%83,+Lai+Chi+Kok&location=%E5%AF%B6%E6%BA%90%E4%BA%9E%E6%B4%B2%E4%B8%AD%E5%BF%83,+Lai+Chi+Kok,+Kowloon&recur=RRULE:FREQ%3DWEEKLY;BYDAY%3DSA,SU'},
+    {type:'clinic',typeLabel:'Beginner Clinic',stripe:'#F47820',date:'Every Tuesday',title:'Beginner Clinic',desc:'Never picked up a paddle? Our coached sessions cover the basics — rules, scoring, technique, and court etiquette.',time:'19:00 – 21:00',spots:'Max 8 players',wa:true,calUrl:'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Beginner+Clinic+%40+Allday+Pickle+Co.&details=Beginner+pickleball+clinic+at+Allday+Pickle+Co.&location=%E5%AF%B6%E6%BA%90%E4%BA%9E%E6%B4%B2%E4%B8%AD%E5%BF%83,+Lai+Chi+Kok,+Kowloon&recur=RRULE:FREQ%3DWEEKLY;BYDAY%3DTU'},
+    {type:'product',typeLabel:'ADPC Exclusive',stripe:'#1B5C3F',date:'Monthly — check WhatsApp for dates',title:'Allday Pickle Product Testing Session',desc:'Be the first to try our upcoming paddle and ball releases. Exclusive to our community — limited spots each session.',time:'TBA',spots:'Invite only',wa:true,calUrl:''}
   ],
   'ev-cta':'WhatsApp us to join an event →',
   'sl-am':'What\'s Included','st-am':'Everything you<br/><em>need to play.</em>','sd-am':'Show up and play. No gear needed.',
@@ -614,7 +614,7 @@ en:{
     {q:'Do I need to bring my own equipment?',a:'No — paddles and balls are included with every booking. Just show up and play.'},
     {q:'How do I pay?',a:'Via FPS 轉數快 or PayMe. After booking, send your payment screenshot to WhatsApp +852 9474 7571 and we\'ll confirm within minutes.'},
     {q:'How long is my slot held after booking?',a:'1 hour. If payment isn\'t received, the slot is automatically released.'},
-    {q:'Can I book more than 4 hours?',a:'Yes — WhatsApp us at +852 9474 7571 and we\'ll arrange it manually.'},
+    {q:'Can I book more than 3 hours?',a:'Yes — WhatsApp us at +852 9474 7571 and we\'ll arrange it for you.'},
     {q:'Is there parking nearby?',a:'We recommend the MTR (Lai Chi Kok Exit A, 1 min walk). Paid parking is available in the building.'},
     {q:'Can I host a private event or corporate outing?',a:'Absolutely — book Both Courts and WhatsApp us to discuss event packages.'},
     {q:'How do I join an event or open play session?',a:'WhatsApp us at +852 9474 7571. Events are announced on our Instagram and WhatsApp community.'}
@@ -652,7 +652,7 @@ zh:{
   'sd-p':'繁忙時段：週末早上8時起，平日下午6時起。預約多小時自動享有折扣。',
   'pt-op':'🌙 非繁忙時段','pt-pk':'☀️ 繁忙時段',
   rows:[['主場','$300/小時','$400/小時'],['練習場','$200/小時','$300/小時'],['全場','$500/小時','$700/小時']],
-  'd2h':'預約2小時折扣','d3h':'預約3至4小時折扣',
+  'd2h':'預約2小時折扣','d3h':'預約3小時折扣',
   pnote:'💳 可使用 FPS 轉數快 或 PayMe 付款。付款後請於 WhatsApp 傳送收款截圖以確認預約。',
   'sl-ev':'活動及課程','st-ev':'加入我們，<br/><em>一起打波。</em>',
   'sd-ev':'由輕鬆的開放練習到初學者課程——Allday Pickle 總有精彩活動等你參與。',
@@ -702,7 +702,7 @@ zh:{
     {q:'需要自備裝備嗎？',a:'不需要。每次預約均包含球拍及匹克球，直接來打波就好。'},
     {q:'如何付款？',a:'可使用FPS轉數快或PayMe。付款後請透過WhatsApp（+852 9474 7571）傳送截圖，我們將於數分鐘內確認。'},
     {q:'時段可以保留多久？',a:'保留1小時。若未於此時間內收到付款，時段將自動釋放。'},
-    {q:'可以預約超過4小時嗎？',a:'可以，請直接WhatsApp我們（+852 9474 7571）安排。'},
+    {q:'可以預約超過3小時嗎？',a:'可以，請直接WhatsApp我們（+852 9474 7571）安排。'},
     {q:'附近有停車場嗎？',a:'建議乘搭港鐵（荔枝角站A出口，步行約1分鐘）。大廈內設有收費停車場。'},
     {q:'可以舉辦私人活動嗎？',a:'可以，預約全場並WhatsApp我們了解活動套餐詳情。'},
     {q:'如何報名參加活動？',a:'WhatsApp我們（+852 9474 7571）即可。活動詳情亦會在Instagram及WhatsApp社群公布。'}
@@ -740,7 +740,7 @@ ja:{
   'sd-p':'ピーク時間：週末は8時以降、平日は18時以降。複数時間割引は自動適用されます。',
   'pt-op':'🌙 オフピーク','pt-pk':'☀️ ピーク時間',
   rows:[['ホームコート','$300/時間','$400/時間'],['練習コート','$200/時間','$300/時間'],['両コート','$500/時間','$700/時間']],
-  'd2h':'2時間予約で割引','d3h':'3〜4時間予約で割引',
+  'd2h':'2時間予約で割引','d3h':'3時間予約で割引',
   pnote:'💳 FPS轉數快またはPayMeでお支払いください。支払い後、WhatsAppにスクリーンショットをお送りください。',
   'sl-ev':'イベント＆セッション','st-ev':'コートで<br/><em>一緒に楽しもう。</em>',
   'sd-ev':'気軽なオープンプレイから初心者クリニックまで — Allday Pickleでは常に何かが開催されています。',
@@ -790,7 +790,7 @@ ja:{
     {q:'用具を持参する必要がありますか？',a:'不要です。パドルとボールは全予約に含まれています。手ぶらでお越しください。'},
     {q:'支払い方法は？',a:'FPS轉數快またはPayMeでお支払いください。支払い後にWhatsApp（+852 9474 7571）でスクリーンショットをお送りください。'},
     {q:'スロットはどのくらい確保されますか？',a:'1時間です。この時間内にお支払いがない場合、スロットは自動的に解放されます。'},
-    {q:'4時間以上の予約は可能ですか？',a:'はい。WhatsApp（+852 9474 7571）で直接ご連絡ください。'},
+    {q:'3時間以上の予約は可能ですか？',a:'はい。WhatsApp（+852 9474 7571）で直接ご連絡ください。'},
     {q:'近くに駐車場はありますか？',a:'MTRをお勧めします（荔枝角駅出口A、徒歩約1分）。建物内に有料駐車場があります。'},
     {q:'プライベートイベントの開催は可能ですか？',a:'はい。両コートをご予約の上、WhatsAppでお問い合わせください。'},
     {q:'イベントに参加するにはどうすればいいですか？',a:'WhatsApp（+852 9474 7571）でご連絡ください。イベント情報はInstagramとWhatsAppコミュニティでもお知らせします。'}
@@ -813,26 +813,36 @@ function COURTS(){return ALL_COURTS[lang]}
 
 function setLang(l){
   lang=l;
-  // Update active state on all lang buttons immediately
-  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('on',
-    (b.textContent==='EN'&&l==='en')||(b.textContent==='繁中'&&l==='zh')||(b.textContent==='日'&&l==='ja')));
-  document.querySelectorAll('.mob-lang button').forEach(b=>b.classList.toggle('on',
-    (b.textContent==='English'&&l==='en')||(b.textContent==='繁體中文'&&l==='zh')||(b.textContent==='日本語'&&l==='ja')));
+  // Use data-lang attribute for reliable matching
+  document.querySelectorAll('[data-lang]').forEach(b=>{
+    b.classList.toggle('on', b.getAttribute('data-lang')===l);
+  });
   selCourt=null;startH=null;dur=1;step=1;tabIdx=0;
-  // Show brief flash to indicate page is updating
-  const flash=document.createElement('div');
-  flash.style.cssText='position:fixed;inset:0;background:rgba(27,92,63,.15);z-index:9998;pointer-events:none;transition:opacity .3s';
-  document.body.appendChild(flash);
-  setTimeout(()=>{flash.style.opacity='0';setTimeout(()=>flash.remove(),300);},200);
-  renderAll();
+  // Show language refresh overlay
+  const overlay=document.createElement('div');
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(13,31,23,.7);z-index:9998;display:flex;align-items:center;justify-content:center;transition:opacity .4s';
+  overlay.innerHTML='<div style="text-align:center"><div style="width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#1B5C3F;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px"></div><div style="font-size:12px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase">Updating...</div></div>';
+  document.body.appendChild(overlay);
+  // Add spin keyframe if not present
+  if(!document.getElementById('spin-style')){
+    const s=document.createElement('style');
+    s.id='spin-style';
+    s.textContent='@keyframes spin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(s);
+  }
+  setTimeout(()=>{
+    renderAll();
+    overlay.style.opacity='0';
+    setTimeout(()=>overlay.remove(),400);
+  },400);
 }
 
-function set(id,html,inner=false){const e=document.getElementById(id);if(e){inner?e.innerHTML=html:e.textContent=html}}
+function set(id,html,inner=false){try{const e=document.getElementById(id);if(e){inner?e.innerHTML=html:e.textContent=html}}catch(err){}}
 
 function renderAll(){
   const l=L();
-  document.getElementById('ldr-tag').textContent=l.ldrTag;
-  document.getElementById('t-banner').innerHTML=l.banner;
+  const ldrTag=document.getElementById('ldr-tag');if(ldrTag)ldrTag.textContent=l.ldrTag;
+  const tBanner=document.getElementById('t-banner');if(tBanner)tBanner.innerHTML=l.banner;
   const navIds=['nt-courts','nt-events','nt-pricing','nt-location','nt-contact','nt-book'];
   const mobIds=['nm-courts','nm-events','nm-pricing','nm-location','nm-contact','nm-book'];
   l.nav.forEach((v,i)=>{set(navIds[i],v);set(mobIds[i],v)});
@@ -1124,4 +1134,21 @@ async function holdSlot(){
   renderStepBar();
 }
 
-function toggleMenu(){document.getElementById('mobMenu').c
+function toggleMenu(){document.getElementById('mobMenu').classList.toggle('open')}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderAll();
+});
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const el=document.getElementById('loader');
+    if(el){
+      el.classList.add('hide');
+      setTimeout(()=>{el.remove();window.scrollTo({top:0,behavior:'instant'});},800);
+    }
+  },1600);
+});
+</script>
+</body>
+</html>
