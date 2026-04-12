@@ -278,6 +278,10 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
     <div class="ldr-tag" id="ldr-tag">Good energy · Great game</div>
   </div>
   <div class="ldr-bar"><div class="ldr-fill"></div></div>
+  <div style="margin-top:24px;font-size:11px;color:rgba(255,255,255,.2);text-align:center;line-height:1.7">
+    Having trouble loading?<br/>
+    <a href="https://wa.me/85294747571" style="color:rgba(255,255,255,.35);text-decoration:none;font-weight:600">WhatsApp us at +852 9474 7571</a>
+  </div>
 </div>
 
 <!-- BANNER -->
@@ -517,7 +521,7 @@ footer{background:var(--dark);color:white;padding:clamp(36px,5vw,52px) 5vw 28px}
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const WA='85294747571';
-const API_URL='https://script.google.com/macros/s/AKfycbzUhq-cB14FXodw5vlY8U77u7W8ufIAOZjOvy6dWZMvACjPJKRy2R8PL1xWj95n_fc2pg/exec';
+const API_URL='YOUR_GOOGLE_APPS_SCRIPT_DEPLOYED_URL';
 const G='#1B5C3F',O='#F47820',LIME='#7DC52E';
 
 // Courts stored in JS array — referenced by index (fixes onclick bug)
@@ -1059,7 +1063,7 @@ async function holdSlot(){
   try {
     const courtKey=selCourt.idx===0?'home':selCourt.idx===1?'practice':'both';
     const params=new URLSearchParams({action:'book',date:toDateKey(selDate),court:courtKey,startHour:startH,duration:dur,name:name,phone:phone,price:p.sub,total:p.total,paymentMethod:'FPS'});
-    const res=await fetch(_URL+'?'+params);
+    const res=await fetch(API_URL+'?'+params);
     const result=await res.json();
 
     if(!result.success){
