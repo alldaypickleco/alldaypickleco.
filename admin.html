@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ADPC Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#1B5C3F;--g2:#0F3D27;--o:#F47820;--wa:#25D366;--red:#dc3232;--cream:#F5F0E8;--light:#F9F6F1;--text:#1A1A1A;--muted:#6B6560;--silver:#B8C4CA;--border:rgba(184,196,202,.4)}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+#login-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--g),#060f0a);display:flex;align-items:center;justify-content:center;z-index:1000}
+.login-box{background:white;border-radius:20px;padding:40px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-brand{font-size:13px;font-weight:800;margin-bottom:20px}
+.login-brand .g{color:var(--g)}.login-brand .o{color:var(--o)}
+.login-box h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.login-box p{font-size:13px;color:var(--muted);margin-bottom:24px}
+.login-box input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;font-family:inherit;outline:none;margin-bottom:12px}
+.login-box input:focus{border-color:var(--g)}
+.login-btn{width:100%;padding:13px;border-radius:12px;border:none;background:var(--g);color:white;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.login-err{color:var(--red);font-size:13px;margin-top:10px;display:none}
+#app{display:none}
+.topbar{background:white;border-bottom:1px solid var(--border);padding:0 5vw;position:sticky;top:0;z-index:100}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;height:56px;max-width:1400px;margin:0 auto}
+.tb-logo{display:flex;flex-direction:column;line-height:1.1}
+.tb-logo span:first-child{font-size:12px;font-weight:800;color:var(--g)}
+.tb-logo span:last-child{font-size:12px;font-weight:800;color:var(--o)}
+.tb-right{display:flex;align-items:center;gap:12px}
+.badge-alert{background:rgba(244,120,32,.15);color:var(--o);font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.btn-logout{background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+.tabs{background:white;border-bottom:1px solid var(--border);padding:0 5vw;overflow-x:auto}
+.tabs-inner{display:flex;max-width:1400px;margin:0 auto;white-space:nowrap}
+.tab{padding:14px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.2s}
+.tab.active{color:var(--g);border-bottom-color:var(--g)}
+.main{max-width:1400px;margin:0 auto;padding:24px 5vw}
+.panel{display:none}.panel.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+.stat{background:white;border-radius:14px;border:1px solid var(--border);padding:18px}
+.stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--silver);margin-bottom:8px}
+.stat-val{font-size:26px;font-weight:800}
+.stat-val.orange{color:var(--o)}.stat-val.green{color:var(--g)}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sec-hdr h3{font-size:16px;font-weight:800}
+.btn-refresh{background:var(--light);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-refresh:hover{border-color:var(--g);color:var(--g)}
+.bcard{background:white;border-radius:14px;border:1px solid var(--border);margin-bottom:10px;overflow:hidden}
+.bcard.pending{border-left:4px solid var(--o)}
+.bcard.confirmed{border-left:4px solid var(--g)}
+.bcard.released{border-left:4px solid var(--silver);opacity:.55}
+.bcard-top{padding:14px 16px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px}
+.bcard-info .bid{font-size:11px;font-family:monospace;color:var(--silver);margin-bottom:2px}
+.bcard-info .bname{font-size:15px;font-weight:700}
+.bcard-info .bdetail{font-size:13px;color:var(--muted);margin-top:2px}
+.bcard-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.status-pill{font-size:10px;font-weight:700;padding:4px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px}
+.status-pill.PENDING{background:rgba(244,120,32,.15);color:var(--o)}
+.status-pill.CONFIRMED{background:rgba(27,92,63,.12);color:var(--g)}
+.status-pill.RELEASED{background:rgba(184,196,202,.3);color:var(--muted)}
+.court-pill{font-size:11px;background:rgba(27,92,63,.08);color:var(--g);padding:3px 8px;border-radius:20px;font-weight:600}
+.btotal{font-size:16px;font-weight:800}
+.bcard-meta{padding:0 16px 8px;display:flex;gap:16px;flex-wrap:wrap}
+.bcard-meta span{font-size:12px;color:var(--muted)}
+.bcard-meta .door{font-family:monospace;font-weight:700;color:var(--g);background:rgba(27,92,63,.08);padding:2px 8px;border-radius:6px}
+.bcard-actions{padding:0 16px 14px;display:flex;gap:8px;flex-wrap:wrap}
+.btn-confirm{background:var(--g);color:white;border:none;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-confirm:hover{background:var(--g2)}
+.btn-release{background:white;color:var(--red);border:1.5px solid var(--red);padding:9px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-release:hover{background:var(--red);color:white}
+.btn-wa{background:var(--wa);color:white;border:none;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.btn-note{background:var(--light);color:var(--muted);border:1px solid var(--border);padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.btn-wa-gen{background:rgba(37,211,102,.12);color:#0a7a3a;border:1.5px solid rgba(37,211,102,.4);padding:9px 14px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-wa-gen:hover{background:var(--wa);color:white;border-color:var(--wa)}
+.note-area{padding:0 16px 12px;display:none}
+.note-area textarea{width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);font-size:13px;font-family:inherit;resize:vertical;outline:none;min-height:56px}
+.note-area textarea:focus{border-color:var(--g)}
+.note-save{margin-top:6px;background:var(--g);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+/* WA Message Generator */
+.wa-gen-panel{padding:0 16px 14px;display:none;border-top:1px solid var(--border);margin-top:4px}
+.wa-lang-toggle{display:flex;gap:6px;margin-bottom:10px;margin-top:12px}
+.wa-lang-btn{padding:6px 16px;border-radius:20px;border:1.5px solid var(--border);background:var(--light);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted)}
+.wa-lang-btn.active{background:var(--g);color:white;border-color:var(--g)}
+.wa-textarea{width:100%;padding:12px;border-radius:10px;border:1.5px solid var(--border);font-size:12px;font-family:inherit;resize:vertical;outline:none;min-height:180px;line-height:1.7;background:#fafafa}
+.wa-textarea:focus{border-color:var(--wa)}
+.wa-actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btn-copy-wa{background:var(--wa);color:white;border:none;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px}
+.btn-copy-wa:hover{opacity:.9}
+.btn-regen{background:var(--light);border:1px solid var(--border);color:var(--muted);padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.fbtn{background:white;border:1px solid var(--border);color:var(--muted);padding:6px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.fbtn.active{background:var(--g);color:white;border-color:var(--g)}
+/* Blocks */
+.blocks-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+.add-block-form{background:white;border-radius:16px;border:1px solid var(--border);padding:22px;position:sticky;top:80px}
+.add-block-form h3{font-size:16px;font-weight:800;margin-bottom:18px}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--silver);margin-bottom:6px}
+.form-row input,.form-row select{width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid var(--border);font-size:13px;font-family:inherit;outline:none}
+.form-row input:focus,.form-row select:focus{border-color:var(--g)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-add-block{width:100%;padding:13px;border-radius:12px;border:none;background:var(--o);color:white;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px}
+.btn-add-block:hover{background:#d96b0d}
+.week-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.week-nav h3{font-size:16px;font-weight:800}
+.week-nav-btns{display:flex;gap:8px}
+.week-nav-btn{background:white;border:1px solid var(--border);color:var(--text);padding:7px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.court-tabs{display:flex;gap:8px;margin-bottom:14px}
+.court-tab{padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:white;color:var(--muted);font-family:inherit}
+.court-tab.active{background:var(--g);color:white;border-color:var(--g)}
+.cal-grid{background:white;border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.cal-header{display:grid;background:var(--g);color:white}
+.cal-header-cell{padding:10px 8px;font-size:12px;font-weight:700;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.cal-header-cell:last-child{border-right:none}
+.cal-row{display:grid;border-bottom:1px solid var(--border)}
+.cal-row:last-child{border-bottom:none}
+.cal-hour{padding:8px;font-size:11px;font-weight:700;color:var(--silver);text-align:right;background:var(--light);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;min-width:52px}
+.cal-cell{padding:3px;border-right:1px solid var(--border);min-height:36px;cursor:pointer;transition:.15s}
+.cal-cell:last-child{border-right:none}
+.cal-cell:hover{background:rgba(27,92,63,.04)}
+.cal-cell.booked{background:rgba(27,92,63,.1);cursor:default}
+.cal-cell.blocked{background:rgba(244,120,32,.15);cursor:pointer}
+.cell-label{font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px;text-align:center;line-height:1.3}
+.add-lbl{color:var(--silver);opacity:0}
+.cal-cell:hover .add-lbl{opacity:1}
+.block-chip{background:rgba(244,120,32,.2);border:1px solid rgba(244,120,32,.4);border-radius:5px;padding:2px 5px;font-size:10px;font-weight:700;color:#c45a00;display:flex;align-items:center;justify-content:space-between;gap:4px}
+.block-chip .remove-x{color:var(--red);font-weight:900;cursor:pointer;padding:0 2px}
+.booking-chip{background:rgba(27,92,63,.12);border:1px solid rgba(27,92,63,.2);border-radius:5px;padding:2px 5px;font-size:10px;font-weight:700;color:var(--g)}
+.loading{text-align:center;padding:48px;color:var(--silver);font-size:14px}
+.spinner{width:28px;height:28px;border:3px solid rgba(27,92,63,.15);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px;color:var(--silver)}
+.empty-icon{font-size:36px;margin-bottom:10px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#1A1A1A;color:white;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+@media(max-width:900px){.blocks-layout{grid-template-columns:1fr}.add-block-form{position:static}}
+@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}.bcard-top{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-brand"><span class="g">allday</span><span class="o">pickle co.</span></div>
+    <h2>Admin Dashboard</h2>
+    <p>Manage bookings, blocks & inventory</p>
+    <input type="password" id="pw" placeholder="Password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="login-btn" onclick="login()">Sign In</button>
+    <div class="login-err" id="login-err">Incorrect password.</div>
+  </div>
+</div>
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="tb-logo"><span>allday</span><span>pickle co.</span></div>
+      <div class="tb-right">
+        <span class="badge-alert" id="pending-badge" style="display:none">⏳ <span id="pending-count">0</span> pending</span>
+        <button class="btn-logout" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tabs-inner">
+      <div class="tab active" data-tab="bookings" onclick="switchTab('bookings')">📋 Bookings</div>
+      <div class="tab" data-tab="blocks" onclick="switchTab('blocks')">🚫 Court Blocks</div>
+      <div class="tab" data-tab="upcoming" onclick="switchTab('upcoming')">📅 Upcoming</div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="panel active" id="tab-bookings">
+      <div class="stats">
+        <div class="stat"><div class="stat-lbl">Pending</div><div class="stat-val orange" id="s-pending">—</div></div>
+        <div class="stat"><div class="stat-lbl">Confirmed</div><div class="stat-val green" id="s-confirmed">—</div></div>
+        <div class="stat"><div class="stat-lbl">Today</div><div class="stat-val" id="s-today">—</div></div>
+        <div class="stat"><div class="stat-lbl">Revenue</div><div class="stat-val" id="s-revenue">—</div></div>
+      </div>
+      <div class="sec-hdr">
+        <h3>⏳ Needs Approval</h3>
+        <button class="btn-refresh" onclick="loadBookings()">↻ Refresh</button>
+      </div>
+      <div id="pending-list"></div>
+      <div class="sec-hdr" style="margin-top:28px">
+        <h3>All Bookings</h3>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="fbtn active" onclick="setFilter('all',this)">All</button>
+          <button class="fbtn" onclick="setFilter('PENDING',this)">Pending</button>
+          <button class="fbtn" onclick="setFilter('CONFIRMED',this)">Confirmed</button>
+          <button class="fbtn" onclick="setFilter('RELEASED',this)">Released</button>
+        </div>
+      </div>
+      <div id="recent-list"></div>
+    </div>
+    <div class="panel" id="tab-blocks">
+      <div class="blocks-layout">
+        <div class="add-block-form">
+          <h3>🚫 Add Court Block</h3>
+          <div class="form-row"><label>Date</label><input type="date" id="blk-date"/></div>
+          <div class="form-row"><label>Court</label>
+            <select id="blk-court">
+              <option value="home">Home Court 主場</option>
+              <option value="practice">Practice Court 練習場</option>
+              <option value="both">Both Courts 全場</option>
+            </select>
+          </div>
+          <div class="form-row form-row-2">
+            <div><label>Start Hour</label><select id="blk-start"></select></div>
+            <div><label>End Hour</label><select id="blk-end"></select></div>
+          </div>
+          <div class="form-row"><label>Reason (internal)</label>
+            <select id="blk-reason">
+              <option>Offline Booking</option>
+              <option>Private Event</option>
+              <option>Maintenance</option>
+              <option>Staff Use</option>
+              <option>Open Play</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button class="btn-add-block" onclick="addBlock()">+ Add Block</button>
+          <p style="font-size:11px;color:var(--silver);margin-top:10px;text-align:center">Blocked slots show as unavailable on website immediately.</p>
+        </div>
+        <div>
+          <div class="week-nav">
+            <h3 id="week-label">Week of —</h3>
+            <div class="week-nav-btns">
+              <button class="week-nav-btn" onclick="changeWeek(-1)">← Prev</button>
+              <button class="week-nav-btn" onclick="changeWeek(0)">Today</button>
+              <button class="week-nav-btn" onclick="changeWeek(1)">Next →</button>
+            </div>
+          </div>
+          <div class="court-tabs">
+            <button class="court-tab active" data-court="home" onclick="setCourtView('home',this)">Home Court</button>
+            <button class="court-tab" data-court="practice" onclick="setCourtView('practice',this)">Practice Court</button>
+          </div>
+          <div id="cal-container"><div class="loading"><div class="spinner"></div>Loading calendar...</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="tab-upcoming">
+      <div class="sec-hdr">
+        <h3>📅 Upcoming Confirmed Bookings</h3>
+        <button class="btn-refresh" onclick="loadBookings()">↻ Refresh</button>
+      </div>
+      <div id="upcoming-list"></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const WA_NUM  = '85294747571';
+const ENTRY_LINK   = 'https://bit.ly/3QJcT4F';
+const REWARDS_TC   = 'https://docs.google.com/document/d/1bfu1nyVGtrEytqQPzARBDAnRZdqlA7Cudb8kDwAGb5k/edit?usp=drivesdk';
+const WA_COMMUNITY = 'https://chat.whatsapp.com/Bm1d1An8XQ95Ftq36x0xDd';
+
+let pw = '', allBookings = [], currentFilter = 'all', currentCourtView = 'home', weekOffset = 0, calBlocks = [], calBookings = [];
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+function login() {
+  const p = document.getElementById('pw').value.trim();
+  if (!p) return;
+  document.querySelector('.login-btn').textContent = 'Signing in...';
+  fetch(`${API_URL}?action=admin&password=${p}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.error && data.code === 401) {
+        document.getElementById('login-err').style.display = 'block';
+        document.querySelector('.login-btn').textContent = 'Sign In';
+      } else {
+        pw = p;
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        processBookings(data);
+        initBlocksTab();
+      }
+    })
+    .catch(() => {
+      document.getElementById('login-err').textContent = 'Connection error. Check API URL.';
+      document.getElementById('login-err').style.display = 'block';
+      document.querySelector('.login-btn').textContent = 'Sign In';
+    });
+}
+function logout() {
+  pw = '';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw').value = '';
+  document.querySelector('.login-btn').textContent = 'Sign In';
+  document.getElementById('login-err').style.display = 'none';
+}
+
+// ── BOOKINGS ──────────────────────────────────────────────────────────────────
+function loadBookings() {
+  ['pending-list','recent-list','upcoming-list'].forEach(id =>
+    document.getElementById(id).innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>');
+  fetch(`${API_URL}?action=admin&password=${pw}`)
+    .then(r => r.json()).then(processBookings)
+    .catch(() => toast('❌ Failed to load'));
+}
+
+function processBookings(data) {
+  if (!data || data.error) return;
+  document.getElementById('s-pending').textContent   = data.stats.pending;
+  document.getElementById('s-confirmed').textContent = data.stats.confirmed;
+  document.getElementById('s-today').textContent     = data.stats.today;
+  document.getElementById('s-revenue').textContent   = 'HKD $' + Number(data.stats.revenue).toLocaleString();
+  const badge = document.getElementById('pending-badge');
+  if (data.stats.pending > 0) { badge.style.display='inline'; document.getElementById('pending-count').textContent=data.stats.pending; }
+  else badge.style.display = 'none';
+  const pList = document.getElementById('pending-list');
+  pList.innerHTML = data.pending.length === 0
+    ? '<div class="empty"><div class="empty-icon">✅</div><p>No pending bookings</p></div>'
+    : data.pending.map(b => bookingCard(b)).join('');
+  allBookings = data.recent || [];
+  renderFiltered();
+  const uList = document.getElementById('upcoming-list');
+  uList.innerHTML = !data.upcoming || data.upcoming.length === 0
+    ? '<div class="empty"><div class="empty-icon">📅</div><p>No upcoming bookings</p></div>'
+    : data.upcoming.map(b => bookingCard(b)).join('');
+  calBookings = allBookings;
+}
+
+// ── WA MESSAGE GENERATOR ──────────────────────────────────────────────────────
+function isNightOwl(startTime) {
+  if (!startTime) return false;
+  const h = parseInt((startTime||'0').split(':')[0], 10);
+  return h >= 23 || h < 9;
+}
+
+function courtZh(court) {
+  if (!court) return court;
+  if (court.includes('Main') || court.includes('主場')) return 'A.D.P.C. 主場';
+  if (court.includes('Practice') || court.includes('練習')) return 'A.D.P.C. 練習場';
+  if (court.includes('Both') || court.includes('全場')) return 'A.D.P.C. 全場';
+  return court;
+}
+
+function courtEn(court) {
+  if (!court) return court;
+  if (court.includes('Main') || court.includes('主場')) return 'A.D.P.C. Home Court';
+  if (court.includes('Practice') || court.includes('練習')) return 'A.D.P.C. Practice Court';
+  if (court.includes('Both') || court.includes('全場')) return 'A.D.P.C. Both Courts';
+  return court;
+}
+
+function fmtDateZh(dateStr) {
+  if (!dateStr) return dateStr;
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+  return `${d.getMonth()+1}月${d.getDate()}日`;
+}
+
+function fmtDateEn(dateStr) {
+  if (!dateStr) return dateStr;
+  const d = new Date(dateStr);
+  if (isNaN(d)) return dateStr;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[d.getMonth()]} ${d.getDate()}`;
+}
+
+function generateWAMessage(b, lang) {
+  const code      = (b.doorCode || b.code || '____') + '#';
+  const pax       = b.pax || b.Pax || '';
+  const dur       = Number(b.duration) || 1;
+  const total     = b.total || b.totalPaid || '0';
+  const nightOwl  = isNightOwl(b.startTime);
+  const isPaid    = total && total !== '0' && total !== 'Free' && total !== 'Cancelled' && total !== 'free';
+  const showRewards = isPaid && !nightOwl;
+  const credit    = 20 * dur;
+  const isFirst   = (b.repeatCustomer || b.repeat_customer || '').toLowerCase().includes('first') ||
+                    (Number(b.timesBooked || b.times_booked || 1) <= 1);
+
+  if (lang === 'zh') {
+    const courtName = courtZh(b.court);
+    const dateStr   = fmtDateZh(b.date);
+    const timeStr   = `${b.startTime||''}-${b.endTime||''}`;
+    const paxLine   = pax ? `• ${pax}人\n` : '';
+    let msg = `多謝你! Booking Confirmed! 🏓\n\n預約細節\n• ${courtName}\n• ${dateStr}\n• ${timeStr}\n${paxLine}門口密碼係 ${code}\n詳細嘅入場資料同指引，請參考以下嘅link\n${ENTRY_LINK}`;
+    if (showRewards) {
+      msg += `\n\n你已經獲得 $${credit} 預約回贈（A.D.P.C. Rewards）🎁\n💡 用法好簡單：\n• 每預約1小時 = $20回贈\n• 積分由今日起計 7日內有效\n• 下次預約可以用\n📄 完整條款及細則: ${REWARDS_TC}`;
+    }
+    msg += `\n\n📲 你亦可以加入我哋 WhatsApp 社群第一時間收到社交活動、比賽同優惠消息→ ${WA_COMMUNITY}`;
+    if (isFirst) msg += `\n\n都想問多句，你喺邊度認識到我哋個場㗎？☺️`;
+    msg += `\n\n有任何需要隨時搵我哋☺️💚🧡`;
+    return msg;
+  } else {
+    const courtName = courtEn(b.court);
+    const dateStr   = fmtDateEn(b.date);
+    const timeStr   = `${b.startTime||''}-${b.endTime||''}`;
+    const paxLine   = pax ? `• ${pax} People\n` : '';
+    let msg = `Thank you! Booking Confirmed! 🏓\n\nBooking Details:\n• ${courtName}\n• ${dateStr}\n• ${timeStr}\n${paxLine}Passcode for the door is ${code}\nPlease see below for detailed entry instructions:\n${ENTRY_LINK}`;
+    if (showRewards) {
+      msg += `\n\nYou've earned $${credit} booking credit (A.D.P.C. Rewards) 🎁\n💡 How it works:\n• $20 credit per hour booked\n• Valid for 7 days from today\n• Use it on your next booking\n📄 Full T&Cs: ${REWARDS_TC}`;
+    }
+    msg += `\n\n📲 Join our WhatsApp community for social play, events and offers→ ${WA_COMMUNITY}`;
+    if (isFirst) msg += `\n\nWe noticed it's your first time — do you mind letting us know how you found us? ☺️`;
+    msg += `\n\nFeel free to reach out anytime! ☺️💚🧡`;
+    return msg;
+  }
+}
+
+function toggleWAPanel(id) {
+  const panel = document.getElementById('wa-panel-'+id);
+  if (!panel) return;
+  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+}
+
+function setWALang(id, lang, btn) {
+  document.querySelectorAll(`#wa-panel-${id} .wa-lang-btn`).forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const b = allBookings.find(x => x.bookingId === id) || {};
+  document.getElementById('wa-text-'+id).value = generateWAMessage(b, lang);
+}
+
+function copyAndOpenWA(id, phone) {
+  const textarea = document.getElementById('wa-text-'+id);
+  if (!textarea) return;
+  navigator.clipboard.writeText(textarea.value).then(() => {
+    toast('✅ Message copied!');
+    if (phone) {
+      const num = phone.replace(/\D/g,'');
+      setTimeout(() => window.open(`https://wa.me/${num.startsWith('852') ? num : '852'+num}`, '_blank'), 300);
+    }
+  }).catch(() => {
+    textarea.select();
+    document.execCommand('copy');
+    toast('✅ Message copied!');
+    if (phone) {
+      const num = phone.replace(/\D/g,'');
+      setTimeout(() => window.open(`https://wa.me/${num.startsWith('852') ? num : '852'+num}`, '_blank'), 300);
+    }
+  });
+}
+
+// ── BOOKING CARD ──────────────────────────────────────────────────────────────
+function bookingCard(b) {
+  const sc = (b.status||'RELEASED').toLowerCase();
+  const waMsg = encodeURIComponent(`Hi ${b.name}! Your Allday Pickle booking is confirmed.\n\nBooking ID: ${b.bookingId}\nDate: ${b.date}\nCourt: ${b.court}\nTime: ${b.startTime} – ${b.endTime}\n\n`);
+  const defaultMsg = generateWAMessage(b, 'zh');
+
+  const actions = b.status === 'PENDING' ? `
+    <div class="bcard-actions">
+      <button class="btn-confirm" onclick="confirmB('${b.bookingId}',this)">✅ Confirm</button>
+      <button class="btn-release" onclick="releaseB('${b.bookingId}',this)">❌ Release</button>
+      <button class="btn-wa-gen" onclick="toggleWAPanel('${b.bookingId}')">💬 Generate WA Message</button>
+      <button class="btn-note" onclick="toggleNote('${b.bookingId}')">📝 Note</button>
+    </div>
+    <div class="note-area" id="note-${b.bookingId}">
+      <textarea placeholder="Add a note...">${b.notes||''}</textarea>
+      <button class="note-save" onclick="saveNote('${b.bookingId}')">Save</button>
+    </div>` :
+  b.status === 'CONFIRMED' ? `
+    <div class="bcard-actions">
+      <button class="btn-wa-gen" onclick="toggleWAPanel('${b.bookingId}')">💬 Generate WA Message</button>
+      <button class="btn-release" onclick="releaseB('${b.bookingId}',this)">❌ Release</button>
+      <button class="btn-note" onclick="toggleNote('${b.bookingId}')">📝 Note</button>
+    </div>
+    <div class="note-area" id="note-${b.bookingId}">
+      <textarea placeholder="Add a note...">${b.notes||''}</textarea>
+      <button class="note-save" onclick="saveNote('${b.bookingId}')">Save</button>
+    </div>` : '';
+
+  const waPanel = (b.status === 'PENDING' || b.status === 'CONFIRMED') ? `
+    <div class="wa-gen-panel" id="wa-panel-${b.bookingId}">
+      <div class="wa-lang-toggle">
+        <button class="wa-lang-btn active" onclick="setWALang('${b.bookingId}','zh',this)">中文</button>
+        <button class="wa-lang-btn" onclick="setWALang('${b.bookingId}','en',this)">ENG</button>
+      </div>
+      <textarea class="wa-textarea" id="wa-text-${b.bookingId}">${defaultMsg}</textarea>
+      <div class="wa-actions">
+        <button class="btn-copy-wa" onclick="copyAndOpenWA('${b.bookingId}','${b.whatsapp||''}')">
+          💬 Copy + Open WhatsApp
+        </button>
+        <button class="btn-regen" onclick="setWALang('${b.bookingId}','zh',document.querySelector('#wa-panel-${b.bookingId} .wa-lang-btn.active'))">↻ Regenerate</button>
+      </div>
+      <p style="font-size:11px;color:var(--silver);margin-top:8px">You can edit the message above before sending.</p>
+    </div>` : '';
+
+  return `
+    <div class="bcard ${sc}" id="card-${b.bookingId}">
+      <div class="bcard-top">
+        <div class="bcard-info">
+          <div class="bid">${b.bookingId}</div>
+          <div class="bname">${b.name} · +${b.whatsapp||''}</div>
+          <div class="bdetail">${b.date} · ${b.startTime}–${b.endTime} (${b.duration}h)</div>
+        </div>
+        <div class="bcard-right">
+          <span class="status-pill ${b.status||'RELEASED'}">${b.status||'RELEASED'}</span>
+          <span class="court-pill">${b.court}</span>
+          <span class="btotal">HKD $${b.total}</span>
+        </div>
+      </div>
+      <div class="bcard-meta">
+        <span>💳 ${b.paymentMethod||'FPS'}</span>
+        ${b.doorCode ? `<span>🚪 Door: <span class="door">${b.doorCode}#</span></span>` : ''}
+        ${b.confirmedAt ? `<span style="color:var(--g)">✅ Confirmed ${b.confirmedAt}</span>` : ''}
+        ${b.notes ? `<span>📝 ${b.notes}</span>` : ''}
+      </div>
+      ${actions}
+      ${waPanel}
+    </div>`;
+}
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFiltered();
+}
+function renderFiltered() {
+  const list = currentFilter === 'all' ? allBookings : allBookings.filter(b => b.status === currentFilter);
+  const el = document.getElementById('recent-list');
+  el.innerHTML = list.length === 0
+    ? '<div class="empty"><div class="empty-icon">📋</div><p>No bookings</p></div>'
+    : list.map(b => bookingCard(b)).join('');
+}
+
+function confirmB(id, btn) {
+  if (!confirm(`Confirm ${id}?`)) return;
+  btn.textContent = '...'; btn.disabled = true;
+  fetch(`${API_URL}?action=confirm&id=${id}&password=${pw}`)
+    .then(r => r.json()).then(d => {
+      if (d.success) { toast('✅ Confirmed! Generate the WA message below.'); loadBookings(); }
+      else { toast('❌ ' + (d.error||'Error')); btn.textContent='✅ Confirm'; btn.disabled=false; }
+    });
+}
+function releaseB(id, btn) {
+  if (!confirm(`Release ${id}?`)) return;
+  btn.textContent = '...'; btn.disabled = true;
+  fetch(`${API_URL}?action=release&id=${id}&password=${pw}`)
+    .then(r => r.json()).then(d => {
+      if (d.success) { toast('🔓 Released.'); loadBookings(); }
+      else { toast('❌ ' + (d.error||'Error')); btn.textContent='❌ Release'; btn.disabled=false; }
+    });
+}
+function toggleNote(id) {
+  const el = document.getElementById('note-'+id);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+function saveNote(id) {
+  const note = document.querySelector(`#note-${id} textarea`).value;
+  fetch(`${API_URL}?action=addNote&id=${id}&note=${encodeURIComponent(note)}&password=${pw}`)
+    .then(r => r.json()).then(d => d.success ? toast('📝 Note saved') : toast('❌ Failed'));
+}
+
+// ── BLOCKS CALENDAR ───────────────────────────────────────────────────────────
+function initBlocksTab() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('blk-date').value = today;
+  document.getElementById('blk-date').min   = today;
+  const startSel = document.getElementById('blk-start');
+  const endSel   = document.getElementById('blk-end');
+  for (let h = 0; h < 24; h++) {
+    const t = String(h).padStart(2,'0') + ':00';
+    startSel.innerHTML += `<option value="${h}">${t}</option>`;
+    endSel.innerHTML   += `<option value="${h+1}">${String(h+1<24?h+1:0).padStart(2,'0')}:00</option>`;
+  }
+  startSel.value = '10'; endSel.value = '12';
+  loadCalendar();
+}
+
+function getWeekDates(offset) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const monday = new Date(today);
+  const day = today.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  monday.setDate(today.getDate() + diff + (offset * 7));
+  const days = [];
+  for (let i = 0; i < 7; i++) { const d = new Date(monday); d.setDate(monday.getDate()+i); days.push(d); }
+  return days;
+}
+
+function loadCalendar() {
+  const days  = getWeekDates(weekOffset);
+  const from  = days[0].toISOString().split('T')[0];
+  const to    = days[6].toISOString().split('T')[0];
+  const months= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('week-label').textContent = `Week of ${days[0].getDate()} ${months[days[0].getMonth()]} – ${days[6].getDate()} ${months[days[6].getMonth()]}`;
+  document.getElementById('cal-container').innerHTML = '<div class="loading"><div class="spinner"></div>Loading calendar...</div>';
+  Promise.all([
+    fetch(`${API_URL}?action=getBlocks&from=${from}&to=${to}&password=${pw}`).then(r=>r.json()),
+    fetch(`${API_URL}?action=admin&password=${pw}`).then(r=>r.json())
+  ]).then(([blkData, bkData]) => {
+    calBlocks   = (blkData.blocks||[]).filter(b=>b.active);
+    calBookings = (bkData.recent||[]).filter(b=>b.status==='PENDING'||b.status==='CONFIRMED');
+    renderCalendar(days);
+  }).catch(() => {
+    document.getElementById('cal-container').innerHTML = '<div class="empty"><p>Failed to load calendar</p></div>';
+  });
+}
+
+function renderCalendar(days) {
+  const today    = new Date().toISOString().split('T')[0];
+  const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const months   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const court    = currentCourtView;
+  const courtLbl = court==='home' ? 'Home Court 主場' : 'Practice Court 練習場';
+
+  let html = `<div class="cal-grid"><div class="cal-header" style="grid-template-columns:52px repeat(7,1fr)"><div class="cal-header-cell"></div>`;
+  days.forEach((d,i) => {
+    const dateStr = d.toISOString().split('T')[0];
+    const isToday = dateStr === today;
+    html += `<div class="cal-header-cell" style="${isToday?'background:rgba(255,255,255,.15)':''}">${dayNames[i]}<br/><strong>${d.getDate()} ${months[d.getMonth()]}</strong></div>`;
+  });
+  html += `</div><div class="cal-body">`;
+
+  for (let h = 0; h < 24; h++) {
+    html += `<div class="cal-row" style="grid-template-columns:52px repeat(7,1fr)"><div class="cal-hour">${String(h).padStart(2,'0')}:00</div>`;
+    days.forEach(d => {
+      const dateStr = d.toISOString().split('T')[0];
+      const isToday = dateStr === today;
+      const block = calBlocks.find(b => b.date===dateStr && (b.court===courtLbl||b.court==='Both Courts 全場') && h>=b.startHour && h<b.endHour);
+      const booking = calBookings.find(b => {
+        const bCourt = b.court||'';
+        const bH = parseInt((b.startTime||'0').split(':')[0]);
+        const dur = Number(b.duration)||1;
+        return b.date===dateStr && (bCourt===courtLbl||bCourt==='Both Courts 全場') && h>=bH && h<bH+dur;
+      });
+      if (block) {
+        html += `<div class="cal-cell blocked ${isToday?'today-col':''}"><div class="block-chip" title="${block.reason}"><span>${block.reason.substring(0,10)}</span><span class="remove-x" onclick="removeBlock('${block.id}')">✕</span></div></div>`;
+      } else if (booking) {
+        html += `<div class="cal-cell booked ${isToday?'today-col':''}"><div class="booking-chip" title="${booking.bookingId}: ${booking.name}">${booking.name.split(' ')[0]}</div></div>`;
+      } else {
+        html += `<div class="cal-cell free ${isToday?'today-col':''}" onclick="quickBlock('${dateStr}',${h})"><div class="cell-label add-lbl">+ Block</div></div>`;
+      }
+    });
+    html += `</div>`;
+  }
+  html += `</div></div>`;
+  document.getElementById('cal-container').innerHTML = html;
+}
+
+function quickBlock(date, hour) {
+  document.getElementById('blk-date').value  = date;
+  document.getElementById('blk-start').value = hour;
+  document.getElementById('blk-end').value   = hour + 1;
+  document.querySelector('.add-block-form').scrollIntoView({behavior:'smooth'});
+  toast('📅 Date & time pre-filled — add court & reason then click Add Block');
+}
+function setCourtView(court, btn) {
+  currentCourtView = court;
+  document.querySelectorAll('.court-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCalendar(getWeekDates(weekOffset));
+}
+function changeWeek(dir) {
+  weekOffset = dir===0 ? 0 : weekOffset+dir;
+  loadCalendar();
+}
+function addBlock() {
+  const date      = document.getElementById('blk-date').value;
+  const court     = document.getElementById('blk-court').value;
+  const startHour = document.getElementById('blk-start').value;
+  const endHour   = document.getElementById('blk-end').value;
+  const reason    = document.getElementById('blk-reason').value;
+  if (!date) { toast('⚠️ Please select a date'); return; }
+  if (Number(endHour) <= Number(startHour)) { toast('⚠️ End hour must be after start hour'); return; }
+  document.querySelector('.btn-add-block').textContent = 'Adding...';
+  fetch(`${API_URL}?action=addBlock&date=${date}&court=${court}&startHour=${startHour}&endHour=${endHour}&reason=${encodeURIComponent(reason)}&password=${pw}`)
+    .then(r=>r.json()).then(d => {
+      document.querySelector('.btn-add-block').textContent = '+ Add Block';
+      if (d.success) { toast('🚫 Block added — website updated immediately'); loadCalendar(); }
+      else toast('❌ ' + (d.error||'Failed'));
+    });
+}
+function removeBlock(blockId) {
+  if (!confirm('Remove this block? Slot will become available on website.')) return;
+  fetch(`${API_URL}?action=removeBlock&id=${blockId}&password=${pw}`)
+    .then(r=>r.json()).then(d => {
+      if (d.success) { toast('✅ Block removed'); loadCalendar(); }
+      else toast('❌ Failed');
+    });
+}
+
+// ── TAB SWITCHING ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
+  if (name==='blocks') loadCalendar();
+  if (name==='upcoming'||name==='bookings') loadBookings();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
+document.getElementById('pw').addEventListener('keydown', e => { if(e.key==='Enter') login(); });
+</script>
+</body>
+</html>
