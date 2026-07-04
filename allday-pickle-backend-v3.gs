@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 // ALLDAY PICKLE CO. — Backend v3
-// Supports: Bookings + Manual Blocks + Inventory
+// Supports: Bookings + Manual Blocks + Inventory + Door Codes + Pax Surcharge
 // ═══════════════════════════════════════════════════════════════════════════════
 //
 // SETUP (run each ONCE in order):
@@ -9,31 +9,52 @@
 // 3. Run setupSheet()           — refreshes Bookings tab headers
 // 4. Run setupBlocksSheet()     — creates Blocks tab
 // 5. Run setupInventorySheet()  — creates Inventory tab
-// 6. Run setupTimeTrigger()     — installs hourly auto-release cron
-// 7. Deploy → New deployment → Web App (Execute as: Me, Access: Anyone)
-// 8. Copy URL → update API_URL in index.html and admin.html
+// 6. Run setupDoorCodesSheet()  — creates DoorCodes tab
+// 7. Run setupTimeTrigger()     — installs hourly auto-release cron
+// 8. Deploy → New deployment → Web App (Execute as: Me, Access: Anyone)
+// 9. Copy URL → update API_URL in index.html and admin.html
+//
+// CHANGELOG (this update):
+// - HOLD_HOURS changed from 1 to 0.5 (30 min hold, matches business rules)
+// - Added DoorCodes tab + setupDoorCodesSheet() + getDoorCode endpoint
+// - Added Pax field + automatic extra-pax surcharge ($75/person/hour over
+//   court capacity) to createBooking. New Pax / Extra Charge columns inserted
+//   right after Duration — this pushes Door Code to column Q, matching the
+//   Col Q reference in CLAUDE.md.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const BOOKING_SHEET   = "Bookings";
 const BLOCKS_SHEET    = "Blocks";
 const INVENTORY_SHEET = "Inventory";
-const HOLD_HOURS      = 1;
+const DOORCODES_SHEET = "DoorCodes";
+const HOLD_HOURS      = 0.5;
 const ADMIN_EMAIL     = "house@alldaypickleco.com";
 const ADMIN_PASSWORD  = "adpc2025admin";   // ← change this
 const WA_NUMBER       = "85294747571";
 
+// ─── Pax / extra charge ────────────────────────────────────────────────────────
+const COURT_CAPACITY  = { home: 8, practice: 6, both: 30 };
+const EXTRA_PAX_RATE   = 75; // HKD per extra person, per hour, over capacity
+
 // ─── Bookings columns (0-based) ───────────────────────────────────────────────
+// NOTE: Pax (7) and Extra Charge (8) were inserted after Duration (6), which
+// shifts Door Code to index 16 = column Q (matches CLAUDE.md "Col Q: Door code").
 const COL = {
   BOOKING_ID:0, CREATED_AT:1, DATE:2, COURT:3, START_TIME:4, END_TIME:5,
-  DURATION:6, NAME:7, WHATSAPP:8, PRICE:9, TOTAL:10, PAYMENT_METHOD:11,
-  STATUS:12, BOOKED_VIA:13, DOOR_CODE:14, DISCOUNT:15, CONFIRMED_AT:16,
-  NOTES:17, EXPIRES_AT:18
+  DURATION:6, PAX:7, EXTRA_CHARGE:8, NAME:9, WHATSAPP:10, PRICE:11, TOTAL:12,
+  PAYMENT_METHOD:13, STATUS:14, BOOKED_VIA:15, DOOR_CODE:16, DISCOUNT:17,
+  CONFIRMED_AT:18, NOTES:19, EXPIRES_AT:20
 };
 
 // ─── Blocks columns (0-based) ─────────────────────────────────────────────────
 const BLK = {
   ID:0, DATE:1, COURT:2, START_HOUR:3, END_HOUR:4,
   REASON:5, ACTIVE:6, CREATED_AT:7, CREATED_BY:8
+};
+
+// ─── DoorCodes columns (0-based) ──────────────────────────────────────────────
+const DC = {
+  DATE:0, CODE:1, CREATED_AT:2, CREATED_BY:3
 };
 
 const COURT_LABELS = {
@@ -65,6 +86,7 @@ function doGet(e) {
   if (action === "removeBlock")      return json(removeBlock(e.parameter.id));
   if (action === "inventory")        return json(getInventory());
   if (action === "updateInventory")  return json(updateInventory(e.parameter));
+  if (action === "getDoorCode")      return json(getDoorCode(e.parameter.date));
 
   return json({ error: "Unknown action" });
 }
@@ -157,10 +179,11 @@ function createBooking(params) {
   const court     = params.court;
   const startH    = Number(params.startHour);
   const dur       = Number(params.duration);
+  const pax       = Math.max(1, Number(params.pax) || 1);
   const name      = params.name      || "Guest";
   const phone     = params.phone     || "";
-  const total     = params.total     || "0";
-  const price     = params.price     || total;
+  const baseTotal = Number(params.total) || 0;
+  const price     = params.price     || String(baseTotal);
   const payMethod = params.paymentMethod || "FPS";
 
   if (!date || !court || isNaN(startH) || isNaN(dur)) return { success:false, error:"Missing fields" };
@@ -172,6 +195,12 @@ function createBooking(params) {
     if (avail.blocked[h]) return { success:false, error:"Slot no longer available", takenStatus: avail.blocked[h] };
   }
 
+  // ── Extra pax surcharge ──────────────────────────────────────────────────
+  const capacity    = COURT_CAPACITY[court] || 8;
+  const extraPax    = Math.max(0, pax - capacity);
+  const extraCharge = extraPax * EXTRA_PAX_RATE * dur;
+  const total       = baseTotal + extraCharge;
+
   const startStr   = padH(startH) + ":00";
   const endH       = startH + dur;
   const endStr     = padH(endH >= 24 ? endH - 24 : endH) + ":00";
@@ -182,12 +211,12 @@ function createBooking(params) {
 
   getSheet(BOOKING_SHEET).appendRow([
     bookingId, now.toISOString(), date, courtLabel, startStr, endStr, dur,
-    name, phone, price, total, payMethod, "PENDING", "Website",
+    pax, extraCharge, name, phone, price, total, payMethod, "PENDING", "Website",
     "", "", "", "", expires.toISOString()
   ]);
 
-  notifyAdmin(bookingId, { date, courtLabel, startStr, endStr, dur, name, phone, total, payMethod });
-  return { success:true, bookingId, expiresAt: expires.toISOString() };
+  notifyAdmin(bookingId, { date, courtLabel, startStr, endStr, dur, pax, extraCharge, name, phone, total, payMethod });
+  return { success:true, bookingId, pax, extraCharge, total, expiresAt: expires.toISOString() };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -295,6 +324,27 @@ function removeBlock(blockId) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// DOOR CODES
+// ═══════════════════════════════════════════════════════════════════════════════
+// Admin adds each day's code manually (in the sheet) each evening.
+// Format: 4 digits + "#" (e.g. "2841#"). Same code applies to all bookings that day.
+function getDoorCode(date) {
+  if (!date) return { success:false, error:"Missing date" };
+
+  const sheet = getSheet(DOORCODES_SHEET);
+  if (!sheet) return { success:false, error:"DoorCodes sheet not found — run setupDoorCodesSheet() first." };
+
+  const data = sheet.getDataRange().getValues().slice(1);
+  for (const row of data) {
+    if (String(row[DC.DATE]) !== String(date)) continue;
+    const code = String(row[DC.CODE] || "").trim();
+    if (!code) continue;
+    return { success:true, date: String(date), code };
+  }
+  return { success:false, error:"No door code set for " + date };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ADMIN DATA
 // ═══════════════════════════════════════════════════════════════════════════════
 function getAdminData() {
@@ -326,7 +376,8 @@ function rowToObj(r) {
     bookingId: r[COL.BOOKING_ID]||"", createdAt: r[COL.CREATED_AT]||"",
     date: r[COL.DATE]||"", court: r[COL.COURT]||"",
     startTime: r[COL.START_TIME]||"", endTime: r[COL.END_TIME]||"",
-    duration: r[COL.DURATION]||"", name: r[COL.NAME]||"",
+    duration: r[COL.DURATION]||"", pax: r[COL.PAX]||"",
+    extraCharge: r[COL.EXTRA_CHARGE]||"", name: r[COL.NAME]||"",
     whatsapp: r[COL.WHATSAPP]||"", price: r[COL.PRICE]||"",
     total: r[COL.TOTAL]||"", paymentMethod: r[COL.PAYMENT_METHOD]||"",
     status: r[COL.STATUS]||"", bookedVia: r[COL.BOOKED_VIA]||"",
@@ -394,6 +445,7 @@ function notifyAdmin(bookingId, b) {
     `Date       : ${b.date}`,
     `Court      : ${b.courtLabel}`,
     `Time       : ${b.startStr} – ${b.endStr} (${b.dur}h)`,
+    `Pax        : ${b.pax}${b.extraCharge > 0 ? ` (+HKD $${b.extraCharge} extra pax charge)` : ""}`,
     `Customer   : ${b.name}`,
     `WhatsApp   : ${b.phone}`,
     `Total      : HKD $${b.total}`,
@@ -401,7 +453,7 @@ function notifyAdmin(bookingId, b) {
     `✅ CONFIRM: ${confirmUrl}`,``,
     `❌ RELEASE: ${releaseUrl}`,``,
     `⚠️  After confirming — send door code via WhatsApp!`,
-    `Slot auto-releases in ${HOLD_HOURS} hour.`
+    `Slot auto-releases in ${HOLD_HOURS * 60} minutes.`
   ].join("\n");
   try { MailApp.sendEmail(ADMIN_EMAIL, subject, body); } catch(e) { Logger.log(e); }
 }
@@ -419,13 +471,13 @@ function timeToHour(str)   { return parseInt((str||"0").split(":")[0], 10); }
 function setupSheet() {
   const sheet = getSheet(BOOKING_SHEET);
   const h = ["Booking ID","Created At","Date","Court","Start Time","End Time",
-    "Duration (hrs)","Name","WhatsApp","Price (HKD)","Total (HKD)","Payment Method",
-    "Status","Booked Via","Door Code","Discount (HKD)","Confirmed At","Notes","Expires At"];
+    "Duration (hrs)","Pax","Extra Charge (HKD)","Name","WhatsApp","Price (HKD)","Total (HKD)",
+    "Payment Method","Status","Booked Via","Door Code","Discount (HKD)","Confirmed At","Notes","Expires At"];
   sheet.getRange(1,1,1,h.length).setValues([h]);
   sheet.getRange(1,1,1,h.length).setBackground("#1B5C3F").setFontColor("white").setFontWeight("bold");
-  sheet.getRange(1,15,1,4).setBackground("#F47820").setFontColor("white");
+  sheet.getRange(1, COL.DOOR_CODE+1, 1, 4).setBackground("#F47820").setFontColor("white");
   sheet.setFrozenRows(1);
-  sheet.hideColumns(19);
+  sheet.hideColumns(COL.EXPIRES_AT+1);
   Logger.log("✅ Bookings sheet ready.");
 }
 
@@ -467,6 +519,22 @@ function setupInventorySheet() {
   sheet.getRange(2,1,items.length,h.length).setValues(items);
   sheet.setFrozenRows(1);
   Logger.log("✅ Inventory sheet created.");
+}
+
+function setupDoorCodesSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(DOORCODES_SHEET);
+  if (!sheet) sheet = ss.insertSheet(DOORCODES_SHEET);
+  const h = ["Date","Code","Created At","Created By"];
+  sheet.getRange(1,1,1,h.length).setValues([h]);
+  sheet.getRange(1,1,1,h.length).setBackground("#1B5C3F").setFontColor("white").setFontWeight("bold");
+  sheet.setFrozenRows(1);
+  // Sample row (inactive example — delete once real codes are added)
+  sheet.getRange(2,1,1,4).setValues([[
+    "2026-01-01","1234#", new Date().toISOString(), "Admin"
+  ]]);
+  sheet.getRange(2,1,1,4).setBackground("#FFF3E0");
+  Logger.log("✅ DoorCodes sheet created. Add each day's code manually (Date + Code columns, e.g. 2841#). Delete the sample row when ready.");
 }
 
 function setupTimeTrigger() {
